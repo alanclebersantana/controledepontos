@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#181C22">
+<title>MP Controle de Pontos LATAM</title>
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAMAAABGS8AGAAAAYFBMVEX03VgDJSqVnVNWaTopSTQAAABnrqxic0r3lB0qXVr57l/13lh3hEbHvE/8/Ab03ld1wL55xMKhcCP/vz//fwD/f3//qlV/f38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuDXH5AAAAGHRSTlP+/////wD/////EaX//wFf////BAICAwJQRH6XAAADxUlEQVR42u2Za3ekIAyGJQnFu9tO2/3//3S5qRCCtR09+6U5p6fjDDy+hhCINLofmmdtGJZea+3+Nmsu4Ab4Mus5QTcXcZ0tqejmSht63c93gJ3o+e8t4GaY9cctYOuO+f0WcDM8PudbwM2gHwyMqmKY90zbEcJUjmCfgUnVLe1X/EjAyL2dKfsVWGUgGmaaMW03IgnoQX/qtAPVvJb9RMwzk3HokTvjFNgU4BHz3/k4nASXipXKHn4iRu5/6ApgYD/ymHn5EAzRdwUY8ziJ5PRegisAEq5SkwTmAxij8BDswicEvefK4KAOgT1ecreFg2GbUWafdAxswN+PmD8wqIhO5uBJmswc7K9XheMqdFKCg/beICSJUvG4CbYPRsdxtX09AbLkI828GHEmGbMyCIveeAhWftQIGdf54gvwqpgqYGumCf7NBpBEJ68+TvNtHezFAUuoB2DXNPTEOhjbNwyOIsqmFNbBo9r0RFUiuG3fNk8BJe3qrqDtOekQ3LYYyJiNRR08TRATFW1DJINbv7CASkLhAEwqrD1RCh6BHRkazFYtGezSoRsKtWWN8RDc7k5owN2gqthxbdvoAsCxOQa/BTfYJTUse7VwU4HrY/lwBWkzybRN05rilfvl0tQmkkPoh9RcBUNl2SM289pEMuzzA+S86fMlSaay5AJps6yLkpNQnokPNm9YbzfKq/xkUDamAyrNDDS/9mu/9gObTn45ne58nARo4nXBqXrw6TovUVBJbt+v83i78atl4ht13tm927k6ryYA71H8n8CA94BBCJorwMDC0a/tF4DjxjstGuAKsN8Iwl5hYdgrPwvGwIWNbIHGfobxSbCK3JXsuY5MT4HHnRvIkevIT4Eh4Xqy3SablczBgJS8YbLVhd9vymCbDrskVXmdEUzCi5AkLLcNMtaqdAUymYMdtzPdXkV2Xef3nTLYtjAymYrKtHuxZtb8btxVx6bWkL/WEckF2HNf/gRYZz+sZBLfsUDu5Z3MwJ5kn/7l1QPtP3fh70PiWyHnZSOROfg1SI3Ct4vXKtitkxK5UOzHayV365XJwHpgsSyQy8FTGdHz+TKtez5LSj8refCiD9Kr1BWZ5JCPi6jjrtis88O2GuXgRUhGZPbZ3R2Ac8v2Hzr3cnyzkW1v6nVebCDWebqf+2IOIv2szkvrMXc+tAhbR1vS1+o3qNSDY7Z31Fo/9IUnWSl47ufhFrCe328g+xOneb7eG3olL7eAtZ0o/XAH2J9KLtehlx2se4u+7Gj20aRHvu7As+8v0L18zP8AmtYi63DWszMAAAAASUVORK5CYII=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4F7; --bg-2:#FFFFFF; --hover:#F6F2EC;
+  --surface:#FFFFFF; --surface-2:#F3F4F7; --surface-3:#E9EBF0;
+  --line:#DDE1E8; --line-soft:#EBEEF3;
+  --text:#1B2029; --muted:#5E6878; --muted-2:#7D8898;
+  --accent:#C1561A; --accent-2:#B04C14; --accent-dim:rgba(193,86,26,.12);
+  --ok:#2E8A5C; --ok-dim:rgba(46,138,92,.14);
+  --warn:#B98514; --warn-dim:rgba(216,166,46,.18);
+  --bad:#C9524A; --bad-dim:rgba(201,82,74,.12);
+  --info:#3F78B5; --info-dim:rgba(91,143,201,.14);
+  --roxo:#8A5FB5; --roxo-dim:rgba(154,110,196,.16);
+  --st-disp:#1E7A4F; --st-disp-d:rgba(62,158,110,.16);
+  --st-uso:#2F6BA8; --st-uso-d:rgba(91,143,201,.16);
+  --st-b6:#7A4FA8; --st-b6-d:rgba(154,110,196,.16);
+  --st-sol:#9A6A08; --st-sol-d:rgba(216,166,46,.2);
+  --st-fin:#5E6878; --st-fin-d:rgba(140,152,168,.18);
+  --st-perda:#B23A32; --st-perda-d:rgba(201,82,74,.14);
+  --bar:#5B8FC9; --bar-on:#C1561A;
+  --nav-bg:#181C22; --nav-hover:#1E232B; --nav-line:#2F3742; --nav-text:#E9ECF1; --nav-muted:#98A2B1; --nav-muted-2:#6E7885;
+  --nav-on-bg:rgba(193,86,26,.16); --nav-on-text:#E5843D;
+  --stripe:repeating-linear-gradient(135deg,rgba(255,255,255,.022) 0 1px,transparent 1px 9px);
+  --r:10px; --rs:7px;
+}
+:root[data-theme="dark"]{
+  --bg:#13161B; --bg-2:#181C22; --hover:#1A1E25;
+  --surface:#1E232B; --surface-2:#252B35; --surface-3:#2D343F;
+  --line:#2F3742; --line-soft:#252C35;
+  --text:#E9ECF1; --muted:#98A2B1; --muted-2:#6E7885;
+  --accent:#C1561A; --accent-2:#E5843D; --accent-dim:rgba(193,86,26,.16);
+  --ok:#3E9E6E; --ok-dim:rgba(62,158,110,.15);
+  --warn:#D8A62E; --warn-dim:rgba(216,166,46,.15);
+  --bad:#C9524A; --bad-dim:rgba(201,82,74,.15);
+  --info:#5B8FC9; --info-dim:rgba(91,143,201,.15);
+  --roxo:#9A6EC4; --roxo-dim:rgba(154,110,196,.18);
+  --st-disp:#63BE93; --st-disp-d:rgba(62,158,110,.22);
+  --st-uso:#8FB6E0; --st-uso-d:rgba(91,143,201,.22);
+  --st-b6:#C4A3E6; --st-b6-d:rgba(154,110,196,.22);
+  --st-sol:#DCB65A; --st-sol-d:rgba(216,166,46,.22);
+  --st-fin:#98A2B1; --st-fin-d:rgba(140,152,168,.18);
+  --st-perda:#DE8079; --st-perda-d:rgba(201,82,74,.22);
+  --bar:#5B8FC9; --bar-on:#E5843D;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+a{color:var(--accent)}
+input,select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:7px 10px;color:var(--text)}
+input:focus,select:focus,textarea:focus,[contenteditable]:focus{outline:2px solid var(--accent-dim);outline-offset:0;border-color:var(--accent)}
+
+.app{display:grid;grid-template-columns:236px 1fr;height:100dvh;overflow:hidden}
+.rail{background:var(--nav-bg);background-image:var(--stripe);border-right:1px solid var(--nav-line);display:flex;flex-direction:column;min-height:0;color:var(--nav-text)}
+.brand{padding:16px 16px 14px;border-bottom:1px solid var(--nav-line);display:flex;align-items:center;gap:10px}
+.logo{width:32px;height:32px;border-radius:9px;flex:0 0 auto;display:block}
+.brand b{font-size:14px;line-height:1.2;display:block}
+.brand small{color:var(--nav-muted-2);font-size:11.5px}
+.nav{padding:10px;display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border-radius:var(--rs);color:var(--nav-muted);font-weight:600;text-align:left;transition:background .12s,color .12s}
+.nav button svg{width:17px;height:17px;flex:0 0 auto}
+.nav button:hover{background:var(--nav-hover);color:var(--nav-text)}
+.nav button.on{background:var(--nav-on-bg);color:var(--nav-on-text)}
+.nav .badge{margin-left:auto;font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:999px;border:1px solid var(--warn);color:var(--warn)}
+.nav .badge:empty{display:none}
+.nav .gr{font-size:9.5px;font-weight:800;color:var(--nav-muted-2);letter-spacing:.5px;padding:12px 11px 3px}
+.rail-foot{margin-top:auto;padding:12px 16px;border-top:1px solid var(--nav-line);font-size:12px;color:var(--nav-muted-2)}
+.rail-foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px}
+.rail-foot .dot.off{background:var(--bad)}.rail-foot .dot.busy{background:var(--warn)}
+.rail-foot select{width:100%;margin-top:8px;background:#1E232B;border:1px solid var(--nav-line);color:var(--nav-text);font-size:12.5px}
+
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--nav-line);background:var(--nav-bg);background-image:var(--stripe);color:var(--nav-text)}
+.topbar h1{margin:0;font-size:17px;font-weight:800;letter-spacing:-.2px}
+.topbar .sub{color:var(--nav-muted-2);font-size:12.5px}
+.topbar .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:var(--rs);background:var(--surface-2);color:var(--text);font-weight:700;font-size:13px;border:1px solid var(--line);white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{background:none;color:var(--nav-muted);border-color:var(--nav-line)}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.5;cursor:default}
+.view{flex:1;min-height:0;overflow:auto;padding:20px;display:none}
+.view.on{display:block}
+
+.kpis{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;border-left:3px solid var(--c);box-shadow:0 1px 2px rgba(27,32,41,.04);cursor:pointer}
+.kpi:hover{background:var(--hover)}
+.kpi .lab{color:var(--muted-2);font-size:11.5px;font-weight:700}
+.kpi .val{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-top:3px;white-space:nowrap}
+.kpi.hero .val{font-size:30px}
+.kpi .note{color:var(--muted-2);font-size:11.5px;margin-top:3px}
+.kpi .note b{color:var(--muted)}
+.kpis2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.kpi.sm{display:flex;justify-content:space-between;align-items:center;border-left-color:var(--line)}
+.kpi.sm .val{font-size:15px;margin:0;white-space:normal;text-align:right}
+
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.card .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:8px}
+.card h2{margin:0;font-size:13.5px;font-weight:800}
+.card .hd span{color:var(--muted-2);font-size:12px}
+.chart{width:100%;height:210px;display:block}
+.chart .bar{fill:var(--bar)}.chart .bar:hover{fill:var(--bar-on)}
+.chart text{font-family:Nunito,sans-serif;font-size:11.5px;fill:var(--muted)}
+.chart .grid{stroke:var(--line-soft)}.chart .val{font-weight:800;fill:var(--text)}
+
+.alert-list{display:flex;flex-direction:column;gap:8px}
+.alert{display:flex;gap:10px;align-items:center;padding:9px 11px;background:var(--surface-2);border-left:3px solid var(--bad);border-radius:var(--rs);font-size:12.5px;cursor:pointer}
+.alert:hover{background:var(--surface-3)}
+.alert.w{border-left-color:var(--warn)}.alert.i{border-left-color:var(--info)}.alert.p{border-left-color:var(--roxo)}.alert.m{border-left-color:var(--muted-2)}
+.alert b{display:block}.alert span{color:var(--muted-2)}
+.alert .n{margin-left:auto;font-size:18px;font-weight:800}
+
+table.grid{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
+table.grid thead th{position:sticky;top:0;z-index:3;background:var(--bg-2);border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;font-size:11.5px;font-weight:800;color:var(--muted-2);white-space:nowrap;cursor:pointer;user-select:none}
+table.grid thead th:hover{color:var(--text)}
+table.grid td{border-bottom:1px solid var(--line-soft);padding:0 8px;height:36px;vertical-align:middle;white-space:nowrap}
+table.grid tbody tr:hover td{background:var(--hover)}
+table.grid td.num,table.grid th.num{text-align:right}
+table.grid tr:last-child td{border-bottom:0}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;background:var(--d);color:var(--c)}
+.tag i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.mark{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;font-size:10.5px;font-weight:800;color:#fff;margin-right:2px;cursor:help}
+.mark.dup{background:var(--roxo)}.mark.div{background:var(--warn)}.mark.miss{background:#6E7885}.mark.ate{background:var(--info)}
+.cpf{color:var(--muted)}.pw{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted)}
+.cell{display:inline-block;min-width:24px;outline:1px dashed transparent;border-radius:4px;padding:1px 4px;margin:-1px -4px}
+.cell:hover{outline-color:var(--line)}
+.cell:focus{outline:2px solid var(--accent-dim);background:var(--accent-dim)}
+.cell.saving{opacity:.5}
+.obs{max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:auto;max-height:calc(100dvh - 250px)}
+.tfoot{display:flex;justify-content:space-between;color:var(--muted-2);font-size:12.5px;padding:10px 4px;gap:16px}
+.rowmenu{position:relative}
+.rowmenu .mn{display:none;position:absolute;right:0;top:100%;z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);box-shadow:0 10px 30px rgba(0,0,0,.18);min-width:190px;padding:4px}
+.rowmenu.open .mn{display:block}
+.rowmenu .mn button,.rowmenu .mn a{display:block;width:100%;text-align:left;padding:7px 10px;border-radius:5px;font-weight:600;color:var(--text);text-decoration:none;font-size:13px}
+.rowmenu .mn button:hover,.rowmenu .mn a:hover{background:var(--surface-2)}
+.rowmenu .mn .danger{color:var(--bad)}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.filters input[type=search]{min-width:250px}
+#fSec{max-width:300px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--c,var(--muted))}
+.chip[aria-pressed="true"]{background:var(--accent-dim);border-color:var(--accent);color:var(--accent-2)}
+.chip .n{color:var(--muted-2)}
+
+.agroup{margin-bottom:18px}
+.agroup h2{display:flex;align-items:center;gap:8px;font-size:14px;margin:0 0 4px}
+.agroup .how{color:var(--muted-2);font-size:12.5px;margin:0 0 8px}
+
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.mode{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--surface)}
+.mode.on{border-color:var(--accent);background:linear-gradient(var(--accent-dim),transparent 60%) var(--surface)}
+.mode h3{margin:0 0 4px;font-size:15px}.mode p{margin:0 0 8px;color:var(--muted)}.mode ul{margin:0;padding-left:18px;color:var(--muted)}
+.callout{background:var(--warn-dim);border-left:3px solid var(--warn);border-radius:var(--rs);padding:10px 14px;font-size:13px;margin-top:12px}
+.callout.i{background:var(--info-dim);border-left-color:var(--info)}
+.callout.bad{background:var(--bad-dim);border-left-color:var(--bad)}
+h2.sec{font-size:13.5px;margin:18px 0 8px;color:var(--muted)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--muted)}
+.form label.full{grid-column:1/-1}
+.form input,.form select,.form textarea{width:100%}
+.form textarea{min-height:90px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+
+.modal-bg{position:fixed;inset:0;background:rgba(10,12,16,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:12px;width:min(640px,100%);max-height:90dvh;overflow:auto;padding:18px 20px}
+.modal h2{margin:0 0 4px;font-size:16px}.modal .sub{color:var(--muted-2);font-size:12.5px;margin-bottom:12px}
+.modal .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1B2029;color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;max-width:90vw}
+.toast.on{opacity:1}.toast.bad{background:var(--bad)}
+.empty{padding:30px;text-align:center;color:var(--muted-2)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--nav-muted-2);border-top-color:var(--accent-2);border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12px}
+
+@media (max-width:980px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .rail{flex-direction:row;align-items:center;overflow:auto;border-right:0;border-bottom:1px solid var(--nav-line)}
+  .brand{border:0;padding:10px 12px}.brand small{display:none}
+  .nav{flex-direction:row;padding:6px}.nav .gr{display:none}.nav button{white-space:nowrap}
+  .rail-foot{margin:0;border:0;padding:6px 10px;display:flex;gap:8px;align-items:center}.rail-foot select{margin:0;width:auto}
+  .kpis{grid-template-columns:1fr 1fr}.kpis2,.grid2,.modes,.form{grid-template-columns:1fr}
+  .tbl{max-height:none}
+}
+@media (max-width:560px){.kpis{grid-template-columns:1fr}.topbar .sub{display:none}.topbar{padding:10px 12px}.view{padding:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="rail">
+  <div class="brand"><img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAMAAABGS8AGAAAAYFBMVEX03VgDJSqVnVNWaTopSTQAAABnrqxic0r3lB0qXVr57l/13lh3hEbHvE/8/Ab03ld1wL55xMKhcCP/vz//fwD/f3//qlV/f38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuDXH5AAAAGHRSTlP+/////wD/////EaX//wFf////BAICAwJQRH6XAAADxUlEQVR42u2Za3ekIAyGJQnFu9tO2/3//3S5qRCCtR09+6U5p6fjDDy+hhCINLofmmdtGJZea+3+Nmsu4Ab4Mus5QTcXcZ0tqejmSht63c93gJ3o+e8t4GaY9cctYOuO+f0WcDM8PudbwM2gHwyMqmKY90zbEcJUjmCfgUnVLe1X/EjAyL2dKfsVWGUgGmaaMW03IgnoQX/qtAPVvJb9RMwzk3HokTvjFNgU4BHz3/k4nASXipXKHn4iRu5/6ApgYD/ymHn5EAzRdwUY8ziJ5PRegisAEq5SkwTmAxij8BDswicEvefK4KAOgT1ecreFg2GbUWafdAxswN+PmD8wqIhO5uBJmswc7K9XheMqdFKCg/beICSJUvG4CbYPRsdxtX09AbLkI828GHEmGbMyCIveeAhWftQIGdf54gvwqpgqYGumCf7NBpBEJ68+TvNtHezFAUuoB2DXNPTEOhjbNwyOIsqmFNbBo9r0RFUiuG3fNk8BJe3qrqDtOekQ3LYYyJiNRR08TRATFW1DJINbv7CASkLhAEwqrD1RCh6BHRkazFYtGezSoRsKtWWN8RDc7k5owN2gqthxbdvoAsCxOQa/BTfYJTUse7VwU4HrY/lwBWkzybRN05rilfvl0tQmkkPoh9RcBUNl2SM289pEMuzzA+S86fMlSaay5AJps6yLkpNQnokPNm9YbzfKq/xkUDamAyrNDDS/9mu/9gObTn45ne58nARo4nXBqXrw6TovUVBJbt+v83i78atl4ht13tm927k6ryYA71H8n8CA94BBCJorwMDC0a/tF4DjxjstGuAKsN8Iwl5hYdgrPwvGwIWNbIHGfobxSbCK3JXsuY5MT4HHnRvIkevIT4Eh4Xqy3SablczBgJS8YbLVhd9vymCbDrskVXmdEUzCi5AkLLcNMtaqdAUymYMdtzPdXkV2Xef3nTLYtjAymYrKtHuxZtb8btxVx6bWkL/WEckF2HNf/gRYZz+sZBLfsUDu5Z3MwJ5kn/7l1QPtP3fh70PiWyHnZSOROfg1SI3Ct4vXKtitkxK5UOzHayV365XJwHpgsSyQy8FTGdHz+TKtez5LSj8refCiD9Kr1BWZ5JCPi6jjrtis88O2GuXgRUhGZPbZ3R2Ac8v2Hzr3cnyzkW1v6nVebCDWebqf+2IOIv2szkvrMXc+tAhbR1vS1+o3qNSDY7Z31Fo/9IUnWSl47ufhFrCe328g+xOneb7eG3olL7eAtZ0o/XAH2J9KLtehlx2se4u+7Gj20aRHvu7As+8v0L18zP8AmtYi63DWszMAAAAASUVORK5CYII=" alt="Milhas Plus"><div><b>MP Controle de Pontos</b><small>LATAM · bombas 1.250kk / 1.5kk</small></div></div>
+  <nav class="nav" id="nav">
+    <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Painel</button>
+    <button data-v="contas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg>Contas</button>
+    <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>Alertas<span class="badge" id="nAl"></span></button>
+    <button data-v="parceiros"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 4h5M16 8h5M16 12h3"/></svg>Parceiros</button>
+    <div class="gr">DADOS</div>
+    <button data-v="origem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Origem e migração</button>
+    <button data-v="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+  </nav>
+  <div class="rail-foot"><span class="dot busy" id="dot"></span><span id="syncTxt">Conectando…</span>
+    <select id="fParcGlobal" aria-label="Filtrar parceiro"><option value="">Todos os parceiros</option></select>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar"><div><h1 id="tTitle">Painel</h1><div class="sub" id="tSub">Lendo a planilha…</div></div><div class="sp"></div>
+    <button class="btn ghost" id="btnTheme">☾ Escuro</button>
+    <button class="btn ghost" id="btnRefresh">Atualizar agora</button>
+    <button class="btn primary" id="btnNew">+ Nova conta</button>
+  </div>
+
+  <section class="view on" id="v-painel">
+    <div id="errBox"></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="kpis2" id="kpis2"></div>
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Previsão de desbloqueio</h2><span>data de uso + <span id="mesesLbl">6</span> meses · pontos presos</span></div><svg class="chart" id="chart" viewBox="0 0 640 210" role="img" aria-label="Pontos previstos para desbloquear por mês"></svg></div>
+      <div class="card"><div class="hd"><h2>Alertas na planilha</h2><span><a href="#" data-go="alertas">ver todos</a></span></div><div class="alert-list" id="asum"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Disponível por parceiro</h2><span>intactas + em uso</span></div><table class="grid" id="tParc"><thead><tr><th>Parceiro</th><th class="num">Contas</th><th class="num">Intactas</th><th class="num">Pontos disponíveis</th></tr></thead><tbody></tbody></table></div>
+      <div class="card"><div class="hd"><h2>Bloqueios em solicitação</h2><span>aguardando titular / fornecedor</span></div><table class="grid" id="tSol"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Pontos</th><th>Situação</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-contas">
+    <div class="filters" id="chips"></div>
+    <div class="filters">
+      <input type="search" id="q" placeholder="Buscar titular, CPF, parceiro ou observação">
+      <select id="fOrig"><option value="">Todas as abas</option><option value="A">Aba ativa</option><option value="B">Aba bloqueadas</option></select>
+      <select id="fSec"><option value="">Todas as seções</option></select>
+      <select id="fSort"><option value="sf">Ordenar: saldo final ↓</option><option value="row">Ordem da planilha</option><option value="nome">Titular A–Z</option><option value="uso">Data de uso ↓</option><option value="parc">Parceiro A–Z</option></select>
+      <span style="flex:1"></span><button class="btn" id="btnCsv">Exportar CSV</button>
+    </div>
+    <div class="tbl"><table class="grid" id="tContas"><thead><tr>
+      <th></th><th>Status</th><th>Titular</th><th>CPF</th><th>Senha LATAM</th><th>Parceiro</th>
+      <th class="num">Saldo inicial</th><th class="num">Saldo final</th><th class="num">CPFs</th>
+      <th>Agend. / Uso</th><th>Desbloqueio</th><th>ALL</th><th>Telefone</th><th>Obs.</th><th>Seção</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+    <div class="tfoot"><span id="tfL"></span><span id="tfR"></span></div>
+  </section>
+
+  <section class="view" id="v-alertas"><div id="agroups"></div></section>
+
+  <section class="view" id="v-parceiros">
+    <div class="tbl"><table class="grid" id="tParc2"><thead><tr><th>Parceiro</th><th class="num">Contas</th><th class="num">Disponíveis</th><th class="num">Em uso</th><th class="num">Bloq. 6 meses</th><th class="num">Em solicitação</th><th class="num">Finalizadas</th><th class="num">Pontos disponíveis</th><th class="num">Pontos presos</th><th class="num">Alertas</th></tr></thead><tbody></tbody></table></div>
+    <div class="callout i">Grafias diferentes do mesmo parceiro aparecem como linhas separadas. Cadastre o apelido em Ajustes para juntar.</div>
+  </section>
+
+  <section class="view" id="v-origem">
+    <div class="modes">
+      <div class="mode on"><h3>Planilha Google (modo atual)</h3><p>A planilha CONTROLE DE PONTOS 2026 é a base. A ferramenta lê as duas abas e grava nelas o que for editado aqui.</p><ul>
+        <li>Atualização em tempo real: a cada <b id="refLbl">5</b> segundos a ferramenta confere se a planilha mudou e, se mudou, recarrega na hora (também no botão "Atualizar agora")</li>
+        <li>Editar uma célula aqui grava na célula correspondente da planilha</li>
+        <li>"Nova conta" insere uma linha na seção escolhida; "Mover" leva a conta para a outra aba</li>
+        <li>Status é deduzido pela seção da aba e pelas observações (regras em Ajustes)</li></ul>
+        <div id="origemInfo" class="callout i" style="margin-top:10px"></div></div>
+      <div class="mode"><h3>Base própria (futuro)</h3><p>Quando fizer sentido, os dados passam a viver na ferramenta (Firebase) e a planilha vira histórico.</p><ul>
+        <li>Importa as duas abas já organizadas, com os alertas resolvidos</li><li>Status único por conta, data do bloqueio, pontos devolvidos e última atualização como campos próprios</li><li>Preparado para entrar no MP Planejamento Financeiro como página</li></ul></div>
+    </div>
+    <h2 class="sec">Como a ferramenta lê a planilha</h2>
+    <div class="card"><table class="grid"><tbody>
+      <tr><td>Linha de conta</td><td class="cpf">CPF com dígitos, ou nome com saldo preenchido</td></tr>
+      <tr><td>Seção</td><td class="cpf">linha sem dados contendo "CONTA(S)" — ex.: "NOVAS CONTAS BOMBAS 1.5KK…", "CONTA COM PROBLEMA DE BLOQUEIO"</td></tr>
+      <tr><td>Disponível / Em uso</td><td class="cpf">aba ativa, sem marca de bloqueio, saldo final ≥ mínimo; intacta se saldo final = inicial</td></tr>
+      <tr><td>Bloqueio em solicitação</td><td class="cpf">aba ativa com "block", "bloq", "tentando resolver", "contato com titular", "fornecedor", "não existe conta"</td></tr>
+      <tr><td>Bloqueada 6 meses</td><td class="cpf">aba bloqueadas com BLOQ/block (ou data de desbloqueio + pedido cancelado) e resíduo ≥ mínimo; "auditada 180 dias" na aba ativa</td></tr>
+      <tr><td>Finalizada</td><td class="cpf">demais linhas da aba bloqueadas; na aba ativa, saldo final abaixo do mínimo de disponível</td></tr>
+      <tr><td>Cancelamentos</td><td class="cpf">"voltou saldo 11.303", "42.503 voltou", "saldo atual 166.302" ou "pedido cancelado" na observação de conta bloqueada</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="view" id="v-ajustes">
+    <div class="card" style="max-width:760px">
+      <div class="hd"><h2>Conexão</h2><span>Apps Script publicado como app da web</span></div>
+      <div class="form">
+        <label class="full">URL do Apps Script (termina em /exec)<input id="sApi" placeholder="https://script.google.com/macros/s/…/exec"></label>
+        <label class="full">Planilha<span id="sSheet" class="cpf">—</span></label>
+      </div>
+    </div>
+    <div class="card" style="max-width:760px;margin-top:12px">
+      <div class="hd"><h2>Regras de cálculo</h2><span>compartilhadas com quem usa a ferramenta</span></div>
+      <div class="form">
+        <label>Resíduo mínimo para "bloqueada 6 meses" (pts)<input id="sMinRes" type="number" min="0" step="100"></label>
+        <label>Saldo mínimo para "disponível" (pts)<input id="sMinDisp" type="number" min="0" step="1000"></label>
+        <label>Prazo padrão de bloqueio (meses)<input id="sMeses" type="number" min="1" max="24"></label>
+        <label>Alertar "em uso" parado após (dias)<input id="sDias" type="number" min="1"></label>
+        <label>Conferir mudanças na planilha a cada (segundos)<input id="sRef" type="number" min="2" max="120"></label>
+        <label class="full">Apelidos de parceiro — uma linha por grafia: <kbd>grafia = nome certo</kbd><textarea id="sAlias" placeholder="Winius Garcia = Winicius Garcia&#10;Micael temus = Micael Ternus&#10;Milena = Milena Sousa"></textarea></label>
+      </div>
+      <div class="modal acts" style="padding:0;border:0;background:none;max-height:none"><button class="btn primary" id="btnSaveSettings">Salvar ajustes</button></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modal-bg" id="modal"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== MP Controle de Pontos — regras (sem DOM; testável) ===== */
+const MP = (() => {
+  const ST = {
+    disp:  { l: 'Disponível' },
+    uso:   { l: 'Em uso' },
+    b6:    { l: 'Bloqueada 6 meses' },
+    sol:   { l: 'Bloqueio em solicitação' },
+    fin:   { l: 'Finalizada' },
+    nab:   { l: 'Não abastecida' },
+    perda: { l: 'Golpe / fraude' },
+  };
+
+  const num = v => {
+    if (v == null) return null;
+    if (typeof v === 'number') return v;
+    const s = String(v).trim().replace(/\./g, '').replace(',', '.');
+    return /^-?\d+(\.\d+)?$/.test(s) ? Number(s) : null;
+  };
+  const fmt = n => n == null ? '—' : Math.round(n).toLocaleString('pt-BR');
+  const dt = s => { const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((s || '').trim()); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null; };
+  const fdate = d => d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}` : '';
+  const plusMonths = (d, n) => d ? new Date(d.getFullYear(), d.getMonth() + n, d.getDate()) : null;
+  const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+  /** Nome do parceiro sem telefone/sufixos, aplicando apelidos dos Ajustes. */
+  function parceiro(raw, aliases) {
+    let p = String(raw || '').replace(/\(.*?\)/g, '').replace(/\d[\d\s\-]{6,}/g, '').replace(/\s+/g, ' ').trim();
+    p = p.replace(/\s+MP$/i, '').replace(/[\s\-–·,.]+$/g, '').trim();
+    const al = aliases || {};
+    const hit = Object.keys(al).find(k => norm(k) === norm(p));
+    if (hit) p = al[hit];
+    const small = { de: 1, da: 1, do: 1, das: 1, dos: 1, e: 1 };
+    return p.toLowerCase().split(' ').map((w, i) => (i && small[w]) ? w : w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+
+  /** Pontos devolvidos por cancelamento, lidos da observação ("voltou saldo 11.303", "42.503 voltou", "saldo atual 166.302"). */
+  function cancelados(obs) {
+    const o = obs || '';
+    if (/wallet|r\$/i.test(o)) return 0;
+    let m = /volt\w*[^0-9]{0,25}?(\d{1,3}(?:\.\d{3})+|\d{4,})/i.exec(o) || /(\d{1,3}(?:\.\d{3})+|\d{4,})\s*volt/i.exec(o) || /saldo atual\s*(\d{1,3}(?:\.\d{3})+|\d{4,})/i.exec(o);
+    return m ? Number(m[1].replace(/\./g, '')) : 0;
+  }
+
+  /** Classifica uma linha vinda da API. Devolve a linha enriquecida. */
+  function classify(r, S) {
+    const siN = num(r.si), sfN = num(r.sf);
+    const txt = norm([r.obs, r.agend, r.uso, r.desbl, r.tel, r.cpfu, r.all, r.status].join(' '));
+    const canc = cancelados(r.obs);
+    let st;
+    if (r.tab === 'A') {
+      if (/auditada|180 dias/.test(txt)) st = 'b6';
+      else if (/golpe|fraude/.test(txt)) st = 'perda';
+      else if (/ja desbloqueada/.test(txt)) st = 'disp';
+      else if (/nao foi abastecida/.test(txt) || siN === 0) st = 'nab';
+      else if (/block|bloq|tentando resolver|contato com titular|fornecedor|nao existe conta|cancelada na livelo/.test(txt)) st = /secund/.test(txt) ? 'disp' : 'sol';
+      else if (sfN != null && sfN < S.minDisponivel) st = 'fin';
+      else if (sfN == null) st = 'uso';
+      else st = sfN >= siN ? 'disp' : 'uso';
+    } else {
+      const blk = /block|bloq/.test(txt) || (!!dt(r.desbl) && /cancelad|indispon|erro ao enviar/.test(txt));
+      const presos = canc || sfN || 0;
+      st = blk && presos >= S.minResiduo ? 'b6' : 'fin';
+    }
+    const cancAmt = (r.tab === 'B' && (canc || /volt|cancelad/.test(txt))) ? (canc || sfN || 0) : 0;
+    return Object.assign({}, r, {
+      st, siN, sfN, canc: cancAmt,
+      presos: st === 'b6' ? (cancAmt || sfN || 0) : st === 'sol' ? (sfN != null ? sfN : siN || 0) : 0,
+      parcN: parceiro(r.parc, S.aliases),
+      parcKey: norm(parceiro(r.parc, S.aliases)),
+      usoD: dt(r.uso), desblD: dt(r.desbl),
+      cpfDigits: (r.cpf || '').replace(/\D/g, ''),
+      cpfuN: num(r.cpfu),
+    });
+  }
+
+  function kpis(rows) {
+    const disp = rows.filter(r => r.st === 'disp' || r.st === 'uso');
+    const b6 = rows.filter(r => r.st === 'b6');
+    const sol = rows.filter(r => r.st === 'sol');
+    const canc = b6.filter(r => r.canc > 0);
+    const sum = (a, f) => a.reduce((s, r) => s + (f(r) || 0), 0);
+    return {
+      disp: { n: disp.length, v: sum(disp, r => r.sfN), intactas: rows.filter(r => r.st === 'disp').length, emUso: rows.filter(r => r.st === 'uso').length },
+      b6: { n: b6.length, v: sum(b6, r => r.presos), semData: b6.filter(r => !r.desblD).length, grandes: b6.filter(r => r.presos >= 100000).length },
+      sol: { n: sol.length, v: sum(sol, r => r.presos), semSaldo: sol.filter(r => r.sfN == null).length },
+      canc: { n: canc.length, v: sum(canc, r => r.canc) },
+      fin: { n: rows.filter(r => r.st === 'fin').length, v: sum(rows.filter(r => r.st === 'fin'), r => r.sfN) },
+      nab: { n: rows.filter(r => r.st === 'nab').length },
+      perda: { n: rows.filter(r => r.st === 'perda').length, v: sum(rows.filter(r => r.st === 'perda'), r => r.sfN) },
+    };
+  }
+
+  /** Previsão de desbloqueio por mês (uso + N meses) para contas b6. */
+  function previsao(rows, S) {
+    const m = {};
+    rows.filter(r => r.st === 'b6').forEach(r => {
+      const d = plusMonths(r.usoD, S.mesesBloqueio) || r.desblD;
+      if (!d) return;
+      const k = d.getFullYear() * 100 + d.getMonth();
+      m[k] = (m[k] || 0) + r.presos;
+    });
+    return Object.keys(m).map(Number).sort((a, b) => a - b).map(k => ({ y: Math.floor(k / 100), m: k % 100, v: m[k] }));
+  }
+
+  function lev(a, b) {
+    const m = a.length, n = b.length; if (!m || !n) return Math.max(m, n);
+    let prev = Array.from({ length: n + 1 }, (_, j) => j), cur = [];
+    for (let i = 1; i <= m; i++) { cur = [i]; for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; }
+    return prev[n];
+  }
+
+  const AT = {
+    dup:  { l: 'Duplicidade', d: 'mesmo CPF em mais de uma linha', ic: 'D' },
+    div:  { l: 'Divergência', d: 'valores que não batem entre si', ic: '!' },
+    miss: { l: 'Campos faltantes', d: 'informação obrigatória em branco', ic: '?' },
+    ate:  { l: 'Atenção', d: 'situações que merecem olhar', ic: 'i' },
+  };
+
+  function alerts(rows, S, now) {
+    now = now || Date.now();
+    const out = [];
+    const add = (t, r, m) => out.push({ t, r, m });
+    const byCpf = {};
+    rows.forEach(r => { if (r.cpfDigits) (byCpf[r.cpfDigits] = byCpf[r.cpfDigits] || []).push(r); });
+    Object.values(byCpf).filter(a => a.length > 1).forEach(a => a.forEach(r => add('dup', r, `CPF repetido em ${a.length} linhas (${a.map(x => (x.tab === 'A' ? 'ativa' : 'bloq') + ' ' + x.row).join(', ')})`)));
+
+    // parceiros parecidos (possível grafia diferente)
+    const names = Object.values(rows.reduce((m, r) => { if (r.parcN && !m[r.parcKey]) m[r.parcKey] = r.parcN; return m; }, {}));
+    const seen = new Set();
+    names.forEach(a => names.forEach(b => {
+      if (a >= b) return;
+      const na = norm(a), nb = norm(b);
+      const close = na !== nb && ((lev(na, nb) <= 2 && Math.min(na.length, nb.length) >= 10) || (na.split(' ')[0] === nb.split(' ')[0] && lev(na, nb) <= 4) || (na.length >= 5 && (nb.indexOf(na + ' ') === 0 || na.indexOf(nb + ' ') === 0)));
+      if (close && !seen.has(na + '|' + nb)) {
+        seen.add(na + '|' + nb);
+        const r = rows.find(x => x.parcN === a);
+        add('ate', r, `Parceiro "${a}" parece ser o mesmo que "${b}" — se for, cadastre o apelido em Ajustes`);
+      }
+    }));
+
+    rows.forEach(r => {
+      const d = r.cpfDigits;
+      if (d.length !== 11) add('div', r, d ? `CPF com ${d.length} dígitos` : 'CPF em branco ou inválido');
+      if (r.sfN != null && r.siN != null && r.sfN > r.siN) add('div', r, 'Saldo final maior que o inicial');
+      const c = cancelados(r.obs);
+      if (c && r.sfN != null && c !== r.sfN) add('div', r, `Obs. diz que voltaram ${fmt(c)} pts, mas o saldo final está em ${fmt(r.sfN)}`);
+      if (r.usoD && r.desbl) {
+        const e = plusMonths(r.usoD, S.mesesBloqueio);
+        if (!r.desblD) add('div', r, `Data de desbloqueio "${r.desbl}" inválida`);
+        else if (fdate(e) !== fdate(r.desblD)) add('div', r, `Desbloqueio ${r.desbl} não bate com uso + ${S.mesesBloqueio} meses (${fdate(e)})`);
+      }
+      if (r.tab === 'B' && r.sfN != null && r.siN && r.sfN === r.siN) add('div', r, 'Conta na aba de bloqueadas com saldo cheio — saldo final não foi atualizado');
+      if (r.tab === 'A' && r.st === 'fin') add('ate', r, 'Conta já bombada continua na aba ativa — mover para bloqueadas');
+      if (!r.parcN) add('miss', r, 'Sem parceiro responsável');
+      if (r.sfN == null && r.st !== 'nab') add('miss', r, 'Sem saldo final');
+      if (r.siN == null && r.st !== 'nab') add('miss', r, 'Sem saldo inicial');
+      if (r.tab === 'B' && !r.usoD) add('miss', r, r.uso ? `Data de utilização "${r.uso}" inválida` : 'Sem data de utilização');
+      if (r.st === 'b6' && !r.desblD) add('miss', r, 'Bloqueada sem data de desbloqueio — informe para entrar na previsão');
+      if (['sol', 'b6'].includes(r.st) && !(r.tel || r.contato)) add('miss', r, 'Sem telefone do titular');
+      if (!r.senha) add('miss', r, 'Sem senha LATAM');
+      if (r.st === 'uso' && r.upd) { const dias = Math.floor((now - r.upd) / 864e5); if (dias > S.diasParado) add('ate', r, `Em uso há ${dias} dias sem alteração na planilha`); }
+      if (r.st === 'uso' && r.cpfuN != null && r.cpfuN >= 22) add('ate', r, `${r.cpfuN} CPFs usados — perto do limite`);
+      if (/wallet|r\$/i.test(r.obs || '')) add('ate', r, 'Valor em wallet (R$) anotado na observação');
+      if (r.tab === 'B' && !r.status && r.st === 'fin') add('miss', r, 'Sem STATUS (FINALIZADA) na planilha');
+    });
+    return out;
+  }
+
+  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts };
+})();
+if (typeof module !== 'undefined') module.exports = MP;
+
+</script>
+<script>
+/* ===================== configuração ===================== */
+const API_URL_DEFAULT = '';   // cole aqui a URL /exec do Apps Script para não precisar configurar em Ajustes
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1fCXRVtjbNli0wJJwmtRFLY26_HQxqeUzEjVYvrQoetg/edit';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const { fmt, num } = MP;
+const ST_COLOR = { disp: 'st-disp', uso: 'st-uso', b6: 'st-b6', sol: 'st-sol', fin: 'st-fin', nab: 'st-fin', perda: 'st-perda' };
+const tagHtml = st => `<span class="tag" style="--c:var(--${ST_COLOR[st]});--d:var(--${ST_COLOR[st]}-d)"><i></i>${MP.ST[st].l}</span>`;
+
+const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), editing: false, timer: null };
+try { state.api = localStorage.getItem('mp-api') || API_URL_DEFAULT; } catch (_) { state.api = API_URL_DEFAULT; }
+const DEMO = window.__MP_DEMO__ || null;
+
+/* ===================== API ===================== */
+async function apiGet() {
+  if (DEMO) return JSON.parse(JSON.stringify(DEMO));
+  if (!state.api) throw new Error('Informe a URL do Apps Script em Ajustes.');
+  const r = await fetch(state.api + '?action=read&_=' + Date.now(), { redirect: 'follow' });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'Erro na leitura');
+  return j;
+}
+async function apiVersion() {
+  if (DEMO) return DEMO.v || 0;
+  const r = await fetch(state.api + '?action=version&_=' + Date.now(), { redirect: 'follow' });
+  const j = await r.json(); if (!j.ok) throw new Error(j.error || 'Erro'); return j.v;
+}
+async function apiPost(body) {
+  if (DEMO) return demoPost(body);
+  const r = await fetch(state.api, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'Erro ao gravar');
+  return j;
+}
+function demoPost(b) {   // modo demonstração: altera só em memória
+  const t = DEMO.tabs[b.tab];
+  if (b.action === 'update') { const r = t.rows.find(x => x.row === b.row); if (r) r[b.col] = b.value; }
+  if (b.action === 'add') { const row = (t.rows.at(-1)?.row || 1) + 1; t.rows.push(Object.assign({ tab: b.tab, row, sec: t.sections[b.secIdx]?.title || '', secIdx: b.secIdx, raw: [] }, b.values)); }
+  if (b.action === 'delete') { t.rows = t.rows.filter(x => x.row !== b.row); }
+  if (b.action === 'move') { const i = t.rows.findIndex(x => x.row === b.row); const r = t.rows.splice(i, 1)[0]; const to = b.tab === 'A' ? 'B' : 'A'; const tt = DEMO.tabs[to]; const row = (tt.rows.at(-1)?.row || 1) + 1; tt.rows.push(Object.assign({}, r, { tab: to, row, sec: tt.sections[b.toSecIdx]?.title || '', secIdx: b.toSecIdx, uso: b.uso || '', desbl: b.desbl || '' }, b.values || {})); }
+  if (b.action === 'settings') DEMO.settings = Object.assign({}, DEMO.settings, b.settings);
+  DEMO.v = Date.now();
+  return { ok: true };
+}
+
+/* ===================== carga ===================== */
+async function load(silent) {
+  if (state.editing) return;
+  setSync('busy', silent ? 'Atualizando…' : 'Lendo a planilha…');
+  try {
+    const d = await apiGet();
+    state.data = d;
+    state.S = Object.assign({ minResiduo: 3000, minDisponivel: 100000, mesesBloqueio: 6, diasParado: 15, pollSec: 5, aliases: {} }, d.settings || {});
+    state.v = d.v || 0;
+    recompute();
+    const t = new Date(d.readAt || Date.now());
+    setSync('ok', `Ao vivo · planilha lida às ${t.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`);
+    $('#errBox').innerHTML = '';
+    schedule();
+  } catch (e) {
+    setSync('off', 'Sem conexão');
+    $('#errBox').innerHTML = `<div class="callout bad"><b>Não consegui ler a planilha.</b> ${esc(e.message)} <a href="#" data-go="ajustes">Abrir Ajustes</a></div>`;
+    if (!state.api) go('ajustes');
+  }
+}
+/* tempo real: confere a versão da planilha a cada N segundos e recarrega quando muda */
+function schedule() {
+  clearTimeout(state.timer);
+  const sec = Math.min(120, Math.max(2, Number(state.S?.pollSec || 5)));
+  state.timer = setTimeout(poll, sec * 1000);
+}
+async function poll() {
+  if (document.hidden || state.editing) { schedule(); return; }
+  try {
+    const v = await apiVersion();
+    if (v && v !== state.v) { await load(true); return; }
+    setSync('ok', `Ao vivo · planilha lida às ${new Date(state.data.readAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`);
+  } catch (e) { setSync('off', 'Sem conexão — tentando de novo'); }
+  schedule();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+function setSync(k, txt) { $('#dot').className = 'dot ' + (k === 'ok' ? '' : k); $('#syncTxt').textContent = txt; }
+
+function recompute() {
+  const d = state.data;
+  const all = [...d.tabs.A.rows, ...d.tabs.B.rows].map(r => MP.classify(r, state.S));
+  state.rows = all;
+  state.alerts = MP.alerts(all, state.S);
+  // filtro global de parceiro
+  const sel = $('#fParcGlobal'); const cur = sel.value;
+  const names = Object.values(all.reduce((m, r) => { if (r.parcN && !m[r.parcKey]) m[r.parcKey] = r.parcN; return m; }, {})).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  sel.innerHTML = '<option value="">Todos os parceiros</option>' + names.map(n => `<option value="${esc(MP.norm(n))}">${esc(n)}</option>`).join('');
+  sel.value = names.some(n => MP.norm(n) === cur) ? cur : ''; state.parc = sel.value;
+  const secSel = $('#fSec'); const curSec = secSel.value;
+  secSel.innerHTML = '<option value="">Todas as seções</option>' + ['A', 'B'].flatMap(k => d.tabs[k].sections.map(s => `<option value="${k}:${s.idx}">${k === 'A' ? 'Ativa' : 'Bloq'} · ${esc(s.title.slice(0, 48))}</option>`)).join('');
+  secSel.value = curSec;
+  $('#mesesLbl').textContent = state.S.mesesBloqueio; $('#refLbl').textContent = state.S.pollSec;
+  fillSettings();
+  renderAll();
+}
+const mine = r => !state.parc || r.parcKey === state.parc;
+
+/* ===================== painel ===================== */
+function renderAll() {
+  const D = state.rows.filter(mine), A = state.alerts.filter(a => mine(a.r));
+  $('#nAl').textContent = A.length || '';
+  const pn = state.parc ? $('#fParcGlobal').selectedOptions[0].textContent : '';
+  $('#tSub').textContent = (pn ? `Só as contas de ${pn}` : `${state.data.tabs.A.name} · ${state.data.tabs.B.name}`) + ' · edições gravam na planilha';
+  const k = MP.kpis(D);
+  $('#kpis').innerHTML = [
+    { h: 1, st: 'disp', l: 'Pontos LATAM disponíveis para uso', c: 'st-disp', v: k.disp.v, n: `<b>${k.disp.n} contas</b> · ${k.disp.intactas} intactas, ${k.disp.emUso} em uso` },
+    { st: 'b6', l: 'Bloqueados 6 meses', c: 'st-b6', v: k.b6.v, n: `<b>${k.b6.n} contas</b> · ${k.b6.grandes} com 100k+ · ${k.b6.semData} sem data de desbloqueio` },
+    { st: 'sol', l: 'Bloqueados em solicitação com titular', c: 'st-sol', v: k.sol.v, n: `<b>${k.sol.n} contas</b> · ${k.sol.semSaldo} sem saldo anotado` },
+    { st: 'b6', l: 'Cancelamentos em contas bloqueadas', c: 'accent', v: k.canc.v, n: `<b>${k.canc.n} contas</b> · usar ao desbloquear` },
+  ].map(x => `<div class="kpi ${x.h ? 'hero' : ''}" style="--c:var(--${x.c})" data-st="${x.st}"><div class="lab">${x.l}</div><div class="val">${fmt(x.v)}</div><div class="note">${x.n}</div></div>`).join('');
+  $('#kpis2').innerHTML = [
+    { st: 'fin', l: 'Finalizadas (bombadas)', n: `resíduo abaixo de ${fmt(state.S.minResiduo)} não conta como bloqueado`, v: `${k.fin.n} contas · ${fmt(k.fin.v)} pts` },
+    { st: 'nab', l: 'Não abastecidas', n: 'aguardando promo / titular', v: `${k.nab.n} contas` },
+    { st: 'perda', l: 'Golpe / fraude', n: 'fora de todas as somas', v: `${k.perda.n} contas · ${fmt(k.perda.v)} pts` },
+  ].map(x => `<div class="kpi sm" data-st="${x.st}"><div><div class="lab">${x.l}</div><div class="note">${x.n}</div></div><div class="val">${x.v}</div></div>`).join('');
+
+  renderChart(MP.previsao(D, state.S));
+  const AT = MP.AT, cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i' };
+  $('#asum').innerHTML = Object.keys(AT).map(t => `<div class="alert ${cls[t]}" data-go="alertas"><span class="mark ${t}">${AT[t].ic}</span><div><b>${AT[t].l}</b><span>${AT[t].d}</span></div><div class="n">${A.filter(a => a.t === t).length}</div></div>`).join('');
+
+  const disp = D.filter(r => r.st === 'disp' || r.st === 'uso'), p = {};
+  disp.forEach(r => { const o = p[r.parcKey] = p[r.parcKey] || { n: r.parcN || '(sem parceiro)', c: 0, i: 0, v: 0 }; o.c++; if (r.st === 'disp') o.i++; o.v += r.sfN || 0; });
+  $('#tParc tbody').innerHTML = Object.values(p).sort((a, b) => b.v - a.v).map(o => `<tr><td>${esc(o.n)}</td><td class="num">${o.c}</td><td class="num">${o.i}</td><td class="num"><b>${fmt(o.v)}</b></td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhuma conta disponível</td></tr>';
+  $('#tSol tbody').innerHTML = D.filter(r => r.st === 'sol').sort((a, b) => b.presos - a.presos).map(r => `<tr><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.sfN != null ? r.sfN : r.siN)}</td><td class="cpf">${esc([r.obs, r.tel, r.agend].filter(Boolean).join(' · ').slice(0, 60))}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhum bloqueio em solicitação</td></tr>';
+
+  renderParceiros(); renderContas(); renderAlertas();
+}
+function renderChart(ser) {
+  const W = 640, H = 210, L = 52, R = 14, T = 22, B = 30, pw = W - L - R, ph = H - T - B;
+  if (!ser.length) { $('#chart').innerHTML = `<text x="320" y="110" text-anchor="middle">Nenhuma conta bloqueada com data de uso</text>`; return; }
+  const max = Math.max(...ser.map(s => s.v), 1), bw = Math.min(70, pw / ser.length * .6);
+  const mi = n => (n / 1e6).toFixed(2).replace('.', ',') + ' mi';
+  let s = '';
+  for (let i = 0; i <= 3; i++) { const y = T + ph - ph * i / 3; s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${(max * i / 3 / 1e6).toFixed(1).replace('.', ',')} mi</text>`; }
+  const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  ser.forEach((o, i) => { const x = L + pw * (i + .5) / ser.length - bw / 2, h = ph * o.v / max, y = T + ph - h, lab = `${MES[o.m]}/${String(o.y).slice(2)}`;
+    s += `<rect class="bar" x="${x}" y="${y}" width="${bw}" height="${h}" rx="4"><title>${lab}: ${fmt(o.v)} pts</title></rect><text class="val" x="${x + bw / 2}" y="${y - 6}" text-anchor="middle">${mi(o.v)}</text><text x="${x + bw / 2}" y="${H - 10}" text-anchor="middle">${lab}</text>`; });
+  $('#chart').innerHTML = s;
+}
+
+/* ===================== parceiros ===================== */
+function renderParceiros() {
+  const pp = {};
+  state.rows.forEach(r => { const o = pp[r.parcKey || '~'] = pp[r.parcKey || '~'] || { n: r.parcN || '(sem parceiro)', c: 0, d: 0, u: 0, b: 0, s: 0, f: 0, pd: 0, pp: 0, al: 0 };
+    o.c++; if (r.st === 'disp') { o.d++; o.pd += r.sfN || 0; } if (r.st === 'uso') { o.u++; o.pd += r.sfN || 0; } if (r.st === 'b6') o.b++; if (r.st === 'sol') o.s++; if (r.st === 'fin') o.f++; o.pp += r.presos; o.al += state.alerts.filter(a => a.r === r).length; });
+  $('#tParc2 tbody').innerHTML = Object.values(pp).sort((a, b) => b.pd - a.pd).map(o => `<tr><td><b>${esc(o.n)}</b></td><td class="num">${o.c}</td><td class="num">${o.d}</td><td class="num">${o.u}</td><td class="num">${o.b}</td><td class="num">${o.s}</td><td class="num">${o.f}</td><td class="num"><b>${fmt(o.pd)}</b></td><td class="num">${fmt(o.pp)}</td><td class="num">${o.al ? `<span class="mark div">${o.al}</span>` : '—'}</td></tr>`).join('');
+}
+
+/* ===================== contas ===================== */
+const EDITABLE = { A: ['parc', 'nome', 'cpf', 'senha', 'tel', 'si', 'sf', 'cpfu', 'agend', 'obs', 'contato'], B: ['parc', 'nome', 'cpf', 'senha', 'contato', 'si', 'sf', 'cpfu', 'uso', 'desbl', 'all', 'obs'] };
+function cell(r, key, cls) {
+  const ok = EDITABLE[r.tab].includes(key);
+  const raw = r[key] || '';
+  const show = (key === 'si' || key === 'sf') && num(raw) != null ? fmt(num(raw)) : raw;
+  if (!ok) return `<span class="${cls || ''}">${esc(show) || '—'}</span>`;
+  return `<span class="cell ${cls || ''}" contenteditable spellcheck="false" data-tab="${r.tab}" data-row="${r.row}" data-cpf="${esc(r.cpfDigits)}" data-key="${key}" data-orig="${esc(raw)}">${esc(show)}</span>`;
+}
+function filteredRows() {
+  const q = MP.norm($('#q').value), fo = $('#fOrig').value, fs = $('#fSec').value, sort = $('#fSort').value;
+  let rows = state.rows.filter(mine).filter(r => (!state.fSt.size || state.fSt.has(r.st)) && (!fo || r.tab === fo) && (!fs || `${r.tab}:${r.secIdx}` === fs) && (!q || MP.norm([r.nome, r.cpf, r.parc, r.obs, r.senha].join(' ')).includes(q)));
+  const by = { sf: (a, b) => (b.sfN || 0) - (a.sfN || 0), row: (a, b) => a.tab.localeCompare(b.tab) || a.row - b.row, nome: (a, b) => a.nome.localeCompare(b.nome, 'pt-BR'), uso: (a, b) => (b.usoD || 0) - (a.usoD || 0), parc: (a, b) => a.parcN.localeCompare(b.parcN, 'pt-BR') };
+  return rows.sort(by[sort] || by.sf);
+}
+function renderContas() {
+  $('#chips').innerHTML = `<button class="chip" aria-pressed="${!state.fSt.size}" data-st="">Todas</button>` + Object.keys(MP.ST).map(k => `<button class="chip" aria-pressed="${state.fSt.has(k)}" data-st="${k}" style="--c:var(--${ST_COLOR[k]})"><i></i>${MP.ST[k].l} <span class="n">${state.rows.filter(mine).filter(r => r.st === k).length}</span></button>`).join('');
+  const rows = filteredRows();
+  const flags = r => [...new Set(state.alerts.filter(a => a.r === r).map(a => a.t))].map(t => `<span class="mark ${t}" title="${esc(state.alerts.filter(a => a.r === r && a.t === t).map(a => a.m).join('\n'))}">${MP.AT[t].ic}</span>`).join('');
+  $('#tContas tbody').innerHTML = rows.map(r => `<tr data-id="${r.tab}${r.row}">
+    <td>${flags(r)}</td><td>${tagHtml(r.st)}</td><td><b>${cell(r, 'nome')}</b></td><td>${cell(r, 'cpf', 'cpf')}</td><td>${cell(r, 'senha', 'pw')}</td><td>${cell(r, 'parc')}</td>
+    <td class="num">${cell(r, 'si')}</td><td class="num">${cell(r, 'sf')}</td><td class="num">${cell(r, 'cpfu')}</td>
+    <td>${r.tab === 'A' ? cell(r, 'agend') : cell(r, 'uso')}</td><td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'desbl')}</td><td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'all')}</td>
+    <td>${r.tab === 'A' ? cell(r, 'tel', 'cpf') : cell(r, 'contato', 'cpf')}</td><td class="obs" title="${esc(r.obs)}">${cell(r, 'obs', 'cpf')}</td>
+    <td class="cpf" title="${esc(r.sec)}">${r.tab === 'A' ? 'Ativa' : 'Bloq'} · ${esc(r.sec.slice(0, 26))}</td>
+    <td><div class="rowmenu"><button class="btn sm" data-menu="${r.tab}${r.row}">⋯</button><div class="mn">
+      <a href="${sheetLink(r)}" target="_blank" rel="noopener">Abrir na planilha</a>
+      <button data-act="move" data-id="${r.tab}${r.row}">${r.tab === 'A' ? 'Mover para bloqueadas' : 'Mover para aba ativa'}</button>
+      <button data-act="del" data-id="${r.tab}${r.row}" class="danger">Excluir linha</button></div></div></td></tr>`).join('') || `<tr><td colspan="16" class="empty">Nenhuma conta com esses filtros</td></tr>`;
+  $('#tfL').textContent = `${rows.length} de ${state.rows.filter(mine).length} contas`;
+  $('#tfR').textContent = `Saldo final somado: ${fmt(rows.reduce((s, r) => s + (r.sfN || 0), 0))} pts`;
+}
+function sheetLink(r) { const gid = state.data.tabs[r.tab].gid; return `${SHEET_URL}#gid=${gid}&range=A${r.row}`; }
+const findRow = id => state.rows.find(r => r.tab + r.row === id);
+
+/* edição inline */
+document.addEventListener('focusin', e => { if (e.target.classList?.contains('cell')) state.editing = true; });
+document.addEventListener('focusout', async e => {
+  const el = e.target; if (!el.classList?.contains('cell')) return;
+  state.editing = false;
+  const val = el.textContent.trim(), orig = el.dataset.orig;
+  const same = (val === orig) || ((el.dataset.key === 'si' || el.dataset.key === 'sf') && num(val) != null && num(val) === num(orig));
+  if (same) { el.textContent = (el.dataset.key === 'si' || el.dataset.key === 'sf') && num(orig) != null ? fmt(num(orig)) : orig; return; }
+  el.classList.add('saving');
+  try {
+    await apiPost({ action: 'update', tab: el.dataset.tab, row: +el.dataset.row, cpf: el.dataset.cpf, col: el.dataset.key, value: val });
+    const r = state.data.tabs[el.dataset.tab].rows.find(x => x.row === +el.dataset.row); if (r) r[el.dataset.key] = val;
+    toast('Gravado na planilha'); recompute(); load(true);
+  } catch (err) { toast(err.message, true); el.textContent = orig; }
+  el.classList.remove('saving');
+});
+document.addEventListener('keydown', e => { if (e.target.classList?.contains('cell')) { if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); } if (e.key === 'Escape') { e.target.textContent = e.target.dataset.orig; e.target.blur(); } } });
+
+/* menus de linha */
+document.addEventListener('click', e => {
+  const mb = e.target.closest('[data-menu]');
+  $$('.rowmenu.open').forEach(m => { if (!mb || m !== mb.parentElement) m.classList.remove('open'); });
+  if (mb) { mb.parentElement.classList.toggle('open'); return; }
+  const act = e.target.closest('[data-act]'); if (!act) return;
+  const r = findRow(act.dataset.id); if (!r) return;
+  if (act.dataset.act === 'del') confirmDelete(r);
+  if (act.dataset.act === 'move') openMove(r);
+});
+
+/* ===================== alertas ===================== */
+function renderAlertas() {
+  const A = state.alerts.filter(a => mine(a.r)), cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i' };
+  $('#agroups').innerHTML = Object.keys(MP.AT).map(t => { const a = A.filter(x => x.t === t); return `<div class="agroup"><h2><span class="mark ${t}">${MP.AT[t].ic}</span>${MP.AT[t].l} <span class="cpf" style="font-weight:600">· ${a.length}</span></h2><p class="how">${MP.AT[t].d}</p>
+    <div class="tbl" style="max-height:none"><table class="grid"><thead><tr><th>Linha</th><th>Titular</th><th>Parceiro</th><th>Status</th><th>O que está errado</th><th></th></tr></thead><tbody>${a.map(x => `<tr><td class="cpf">${x.r.tab === 'A' ? 'ativa' : 'bloq'} ${x.r.row}</td><td><b>${esc(x.r.nome)}</b></td><td>${esc(x.r.parcN) || '—'}</td><td>${tagHtml(x.r.st)}</td><td>${esc(x.m)}</td><td class="num" style="white-space:nowrap"><button class="btn sm" data-find="${esc(x.r.cpfDigits || x.r.nome)}">Ver conta</button> <a class="btn sm" href="${sheetLink(x.r)}" target="_blank" rel="noopener">Planilha</a></td></tr>`).join('') || '<tr><td colspan="6" class="empty">Nada por aqui</td></tr>'}</tbody></table></div></div>`; }).join('');
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-find]'); if (!b) return; $('#q').value = b.dataset.find; state.fSt.clear(); $('#fOrig').value = ''; $('#fSec').value = ''; go('contas'); renderContas(); });
+
+/* ===================== nova conta / mover / excluir ===================== */
+function openModal(html) { $('#modalBox').innerHTML = html; $('#modal').classList.add('on'); state.editing = true; }
+function closeModal() { $('#modal').classList.remove('on'); state.editing = false; }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal' || e.target.dataset.close != null) closeModal(); });
+const secOptions = (tab, sel) => state.data.tabs[tab].sections.map(s => `<option value="${s.idx}" ${sel === s.idx ? 'selected' : ''}>${esc(s.title.slice(0, 70))}</option>`).join('');
+
+$('#btnNew').onclick = () => {
+  openModal(`<h2>Nova conta</h2><div class="sub">A linha é inserida na planilha, no fim da seção escolhida.</div>
+  <div class="form">
+    <label>Aba<select id="nTab"><option value="A">Ativa</option><option value="B">Bloqueadas</option></select></label>
+    <label>Seção<select id="nSec">${secOptions('A', state.data.tabs.A.sections.length - 1)}</select></label>
+    <label>Parceiro responsável<input id="nParc"></label><label>Telefone do titular<input id="nTel"></label>
+    <label>Nome do titular<input id="nNome"></label><label>CPF (só números)<input id="nCpf" inputmode="numeric"></label>
+    <label>Senha LATAM<input id="nSenha"></label><label>CPFs utilizados<input id="nCpfu" value="0"></label>
+    <label>Saldo inicial<input id="nSi" inputmode="numeric" value="1500000"></label><label>Saldo final<input id="nSf" inputmode="numeric" value="1500000"></label>
+    <label id="lUso" style="display:none">Data de utilização<input id="nUso" placeholder="dd/mm/aaaa" value="${MP.fdate(new Date())}"></label><label id="lDesbl" style="display:none">Data de desbloqueio<input id="nDesbl" placeholder="dd/mm/aaaa" value="${MP.fdate(MP.plusMonths(new Date(), state.S.mesesBloqueio))}"></label>
+    <label class="full">Observação<input id="nObs"></label>
+  </div><div class="acts"><button class="btn" data-close>Cancelar</button><button class="btn primary" id="nSave">Inserir na planilha</button></div>`);
+  $('#nTab').onchange = () => { const t = $('#nTab').value; $('#nSec').innerHTML = secOptions(t, state.data.tabs[t].sections.length - 1); $('#lUso').style.display = $('#lDesbl').style.display = t === 'B' ? '' : 'none'; };
+  $('#nSave').onclick = async () => {
+    const tab = $('#nTab').value;
+    if (!$('#nNome').value.trim() || !$('#nCpf').value.trim()) return toast('Nome e CPF são obrigatórios', true);
+    const values = { parc: $('#nParc').value, nome: $('#nNome').value, cpf: $('#nCpf').value, senha: $('#nSenha').value, si: $('#nSi').value, sf: $('#nSf').value, cpfu: $('#nCpfu').value, obs: $('#nObs').value };
+    if (tab === 'A') { values.tel = $('#nTel').value; } else { values.contato = $('#nTel').value; values.uso = $('#nUso').value; values.desbl = $('#nDesbl').value; }
+    await doPost({ action: 'add', tab, secIdx: +$('#nSec').value, values }, 'Conta inserida na planilha');
+  };
+};
+function openMove(r) {
+  const to = r.tab === 'A' ? 'B' : 'A';
+  const hoje = MP.fdate(new Date());
+  openModal(`<h2>Mover ${esc(r.nome)}</h2><div class="sub">Da aba ${r.tab === 'A' ? 'ativa' : 'de bloqueadas'} para a aba ${to === 'A' ? 'ativa' : 'de bloqueadas'}. A linha original é removida.</div>
+  <div class="form">
+    <label class="full">Seção de destino<select id="mSec">${secOptions(to, state.data.tabs[to].sections.length - 1)}</select></label>
+    ${to === 'B' ? `<label>Data de utilização<input id="mUso" value="${hoje}"></label><label>Data de desbloqueio<input id="mDesbl" value="${MP.fdate(MP.plusMonths(new Date(), state.S.mesesBloqueio))}"></label><label>Saldo final<input id="mSf" value="${esc(r.sf)}"></label><label>Enviado p/ ALL?<input id="mAll" placeholder="✅, BLOQ, Saldo Insuficiente…"></label>` : ''}
+    <label class="full">Observação<input id="mObs" value="${esc(r.obs)}"></label>
+  </div><div class="acts"><button class="btn" data-close>Cancelar</button><button class="btn primary" id="mSave">Mover</button></div>`);
+  $('#mSave').onclick = async () => {
+    const b = { action: 'move', tab: r.tab, row: r.row, cpf: r.cpfDigits, toSecIdx: +$('#mSec').value, values: { obs: $('#mObs').value } };
+    if (to === 'B') { b.uso = $('#mUso').value; b.desbl = $('#mDesbl').value; b.values.sf = $('#mSf').value; b.values.all = $('#mAll').value; }
+    await doPost(b, 'Conta movida');
+  };
+}
+function confirmDelete(r) {
+  openModal(`<h2>Excluir linha</h2><div class="sub">Remove a linha ${r.row} da aba ${r.tab === 'A' ? 'ativa' : 'de bloqueadas'} na planilha. Não dá para desfazer por aqui (use o histórico de versões do Google Sheets).</div>
+  <p><b>${esc(r.nome)}</b> · ${esc(r.cpf)} · ${esc(r.parcN)}</p>
+  <div class="acts"><button class="btn" data-close>Cancelar</button><button class="btn primary" id="dSave" style="background:var(--bad);border-color:var(--bad)">Excluir</button></div>`);
+  $('#dSave').onclick = () => doPost({ action: 'delete', tab: r.tab, row: r.row, cpf: r.cpfDigits }, 'Linha excluída');
+}
+async function doPost(body, okMsg) {
+  const btn = $('#modalBox .primary'); if (btn) { btn.disabled = true; btn.textContent = 'Gravando…'; }
+  try { await apiPost(body); closeModal(); toast(okMsg); await load(true); }
+  catch (e) { toast(e.message, true); if (btn) { btn.disabled = false; btn.textContent = 'Tentar de novo'; } }
+}
+
+/* ===================== ajustes ===================== */
+function fillSettings() {
+  const S = state.S; $('#sApi').value = state.api; $('#sMinRes').value = S.minResiduo; $('#sMinDisp').value = S.minDisponivel; $('#sMeses').value = S.mesesBloqueio; $('#sDias').value = S.diasParado; $('#sRef').value = S.pollSec;
+  $('#sAlias').value = Object.entries(S.aliases || {}).map(([k, v]) => `${k} = ${v}`).join('\n');
+  const d = state.data; $('#sSheet').innerHTML = d ? `<a href="${SHEET_URL}" target="_blank" rel="noopener">CONTROLE DE PONTOS 2026</a> · abas "${esc(d.tabs.A.name)}" e "${esc(d.tabs.B.name)}"` : '—';
+  $('#origemInfo').innerHTML = d ? `Última leitura: ${new Date(d.readAt).toLocaleString('pt-BR')} · ${d.tabs.A.rows.length} contas na aba ativa (${d.tabs.A.sections.length} seções) · ${d.tabs.B.rows.length} na aba de bloqueadas (${d.tabs.B.sections.length} seções)` : '';
+}
+$('#btnSaveSettings').onclick = async () => {
+  const api = $('#sApi').value.trim();
+  try { localStorage.setItem('mp-api', api); } catch (_) {}
+  const changedApi = api !== state.api; state.api = api;
+  const aliases = {}; $('#sAlias').value.split('\n').forEach(l => { const m = /^(.+?)\s*=\s*(.+)$/.exec(l.trim()); if (m) aliases[m[1].trim()] = m[2].trim(); });
+  const settings = { minResiduo: +$('#sMinRes').value || 3000, minDisponivel: +$('#sMinDisp').value || 100000, mesesBloqueio: +$('#sMeses').value || 6, diasParado: +$('#sDias').value || 15, pollSec: +$('#sRef').value || 5, aliases };
+  if (!state.data || changedApi) { await load(); if (!state.data) return; }
+  try { await apiPost({ action: 'settings', settings }); state.S = Object.assign({}, state.S, settings); toast('Ajustes salvos'); recompute(); go('painel'); }
+  catch (e) { toast(e.message, true); }
+};
+
+/* ===================== utilidades ===================== */
+let toastT; function toast(msg, bad) { const t = $('#toast'); t.textContent = msg; t.className = 'toast on' + (bad ? ' bad' : ''); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), bad ? 5000 : 2200); }
+$('#btnCsv').onclick = () => {
+  const rows = filteredRows(), H = ['Status', 'Aba', 'Linha', 'Seção', 'Parceiro', 'Titular', 'CPF', 'Senha', 'Saldo inicial', 'Saldo final', 'CPFs', 'Agend/Uso', 'Desbloqueio', 'ALL', 'Telefone', 'Obs'];
+  const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const csv = [H, ...rows.map(r => [MP.ST[r.st].l, r.tab === 'A' ? 'Ativa' : 'Bloqueadas', r.row, r.sec, r.parcN, r.nome, r.cpf, r.senha, r.siN ?? r.si, r.sfN ?? r.sf, r.cpfu, r.tab === 'A' ? r.agend : r.uso, r.desbl, r.all, r.tel || r.contato, r.obs])].map(l => l.map(q).join(';')).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `controle-pontos-latam-${MP.fdate(new Date()).replace(/\//g, '-')}.csv`; a.click();
+};
+$('#chips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const k = b.dataset.st; if (!k) state.fSt.clear(); else state.fSt.has(k) ? state.fSt.delete(k) : state.fSt.add(k); renderContas(); };
+['q', 'fOrig', 'fSec', 'fSort'].forEach(id => $('#' + id).addEventListener('input', renderContas));
+$('#fParcGlobal').onchange = () => { state.parc = $('#fParcGlobal').value; renderAll(); };
+$('#btnRefresh').onclick = () => load();
+document.addEventListener('click', e => { const k = e.target.closest('.kpi[data-st]'); if (k) { state.fSt = new Set([k.dataset.st]); if (k.dataset.st === 'disp') state.fSt.add('uso'); go('contas'); renderContas(); } });
+
+/* navegação */
+const TITLES = { painel: 'Painel', contas: 'Contas', alertas: 'Alertas', parceiros: 'Parceiros', origem: 'Origem e migração', ajustes: 'Ajustes' };
+function go(v) { $$('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); $$('.nav button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('#tTitle').textContent = TITLES[v]; $('#btnNew').style.display = v === 'contas' || v === 'painel' ? '' : 'none'; try { location.hash = v; } catch (_) {} }
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.v); };
+document.body.addEventListener('click', e => { const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); go(a.dataset.go); } });
+
+/* tema */
+const root = document.documentElement;
+try { if (localStorage.getItem('mp-tema') === 'dark') root.dataset.theme = 'dark'; } catch (_) {}
+const syncT = () => $('#btnTheme').textContent = root.dataset.theme === 'dark' ? '☀ Claro' : '☾ Escuro'; syncT();
+$('#btnTheme').onclick = () => { root.dataset.theme = root.dataset.theme === 'dark' ? '' : 'dark'; try { localStorage.setItem('mp-tema', root.dataset.theme || 'light'); } catch (_) {} syncT(); };
+
+go(TITLES[location.hash.slice(1)] ? location.hash.slice(1) : 'painel');
+load();
+</script>
+</body>
+</html>
