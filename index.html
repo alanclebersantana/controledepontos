@@ -111,7 +111,13 @@ input:focus,select:focus,textarea:focus,[contenteditable]:focus{outline:2px soli
 .card h2{margin:0;font-size:13.5px;font-weight:800}
 .card .hd span{color:var(--muted-2);font-size:12px}
 .chart{width:100%;height:210px;display:block}
-.chart .bar{fill:var(--bar)}.chart .bar:hover{fill:var(--bar-on)}
+.chart .bar{fill:var(--bar);cursor:pointer}.chart .bar:hover{fill:var(--bar-on)}
+[data-f]{cursor:pointer}
+.comp i{cursor:pointer}.comp i:hover{filter:brightness(1.15)}
+.hb:hover .t i{filter:brightness(1.15)}.prog:hover,.legend span[data-f]:hover{background:var(--hover)}
+table.grid tbody tr[data-f]:hover td{background:var(--hover)}
+.chipx{display:inline-flex;align-items:center;gap:8px;padding:4px 6px 4px 11px;border-radius:999px;font-size:12px;font-weight:700;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent-2)}
+.chipx button{color:inherit;font-weight:800;padding:0 4px;border-radius:999px}.chipx button:hover{background:var(--accent);color:#fff}
 .chart text{font-family:Nunito,sans-serif;font-size:11.5px;fill:var(--muted)}
 .chart .grid{stroke:var(--line-soft)}.chart .val{font-weight:800;fill:var(--text)}
 
@@ -168,6 +174,29 @@ table.grid tr:last-child td{border-bottom:0}
 .callout.i{background:var(--info-dim);border-left-color:var(--info)}
 .callout.bad{background:var(--bad-dim);border-left-color:var(--bad)}
 h2.sec{font-size:13.5px;margin:18px 0 8px;color:var(--muted)}
+.comp{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--surface-2);margin:6px 0 10px}
+.comp i{display:block;height:100%;min-width:2px;border-right:2px solid var(--surface)}
+.comp i:last-child{border-right:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px}
+.legend span{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.legend i{width:9px;height:9px;border-radius:3px}
+.legend b{color:var(--text)}
+.hbars{display:flex;flex-direction:column;gap:7px}
+.hb{display:grid;grid-template-columns:150px 1fr 150px;align-items:center;gap:10px;font-size:12.5px}
+.hb .l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .t{height:12px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--c,var(--bar));border-radius:4px}
+.hb .v{text-align:right;font-weight:700;white-space:nowrap}
+.hb .v small{color:var(--muted-2);font-weight:600;margin-left:4px}
+.prog{display:grid;grid-template-columns:1fr 110px 60px;gap:10px;align-items:center;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
+.prog:last-child{border-bottom:0}
+.prog .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prog .n small{display:block;color:var(--muted-2)}
+.prog .t{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}.prog .t i{display:block;height:100%;background:var(--st-uso);border-radius:4px}
+.prog .t i.hot{background:var(--warn)}
+.prog .p{text-align:right;font-weight:700}
+.chart.sm{height:180px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+@media (max-width:980px){.grid3{grid-template-columns:1fr}.hb{grid-template-columns:110px 1fr 80px}}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
 .form label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--muted)}
 .form label.full{grid-column:1/-1}
@@ -230,13 +259,32 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
     <div id="errBox"></div>
     <div class="kpis" id="kpis"></div>
     <div class="kpis2" id="kpis2"></div>
+
+    <div class="card" style="margin-bottom:12px"><div class="hd"><h2>Onde estão os pontos</h2><span id="compTot"></span></div><div class="comp" id="comp"></div><div class="legend" id="compLeg"></div></div>
+
     <div class="grid2">
       <div class="card"><div class="hd"><h2>Previsão de desbloqueio</h2><span>data de uso + <span id="mesesLbl">6</span> meses · pontos presos</span></div><svg class="chart" id="chart" viewBox="0 0 640 210" role="img" aria-label="Pontos previstos para desbloquear por mês"></svg></div>
       <div class="card"><div class="hd"><h2>Alertas na planilha</h2><span><a href="#" data-go="alertas">ver todos</a></span></div><div class="alert-list" id="asum"></div></div>
     </div>
+
     <div class="grid2">
-      <div class="card"><div class="hd"><h2>Disponível por parceiro</h2><span>intactas + em uso</span></div><table class="grid" id="tParc"><thead><tr><th>Parceiro</th><th class="num">Contas</th><th class="num">Intactas</th><th class="num">Pontos disponíveis</th></tr></thead><tbody></tbody></table></div>
+      <div class="card"><div class="hd"><h2>Contas usadas por mês</h2><span>aba bloqueadas · barra = contas · texto = quantas bloquearam</span></div><svg class="chart" id="chartUso" viewBox="0 0 640 210" role="img" aria-label="Contas utilizadas por mês"></svg></div>
+      <div class="card"><div class="hd"><h2>Pontos consumidos por mês</h2><span>saldo inicial − saldo final</span></div><svg class="chart" id="chartCons" viewBox="0 0 640 210" role="img" aria-label="Pontos consumidos por mês"></svg></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Disponível por parceiro</h2><span>intactas + em uso · <span id="parcMore"></span></span></div><div class="hbars" id="hbParc"></div></div>
+      <div class="card"><div class="hd"><h2>Contas em uso</h2><span>consumo do saldo · CPFs usados</span></div><div id="emUso"></div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Maiores saldos presos</h2><span>bloqueadas com mais pontos</span></div><table class="grid" id="tPresos"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Pontos</th><th>Desbloqueio</th></tr></thead><tbody></tbody></table></div>
+      <div class="card"><div class="hd"><h2>Resultado do envio para ALL</h2><span>contas da aba bloqueadas</span></div><div class="hbars" id="hbAll"></div></div>
+    </div>
+
+    <div class="grid2">
       <div class="card"><div class="hd"><h2>Bloqueios em solicitação</h2><span>aguardando titular / fornecedor</span></div><table class="grid" id="tSol"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Pontos</th><th>Situação</th></tr></thead><tbody></tbody></table></div>
+      <div class="card"><div class="hd"><h2>Cancelamentos a usar ao desbloquear</h2><span>pontos devolvidos em contas bloqueadas</span></div><table class="grid" id="tCanc"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Pontos</th><th>Desbloqueio</th></tr></thead><tbody></tbody></table></div>
     </div>
   </section>
 
@@ -483,7 +531,42 @@ const MP = (() => {
     return out;
   }
 
-  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts };
+  /** Contas utilizadas por mês (aba bloqueadas): quantidade, pontos consumidos, quantas bloquearam. */
+  function usoPorMes(rows) {
+    const m = {};
+    rows.filter(r => r.tab === 'B' && r.usoD).forEach(r => {
+      const k = r.usoD.getFullYear() * 100 + r.usoD.getMonth();
+      const o = m[k] = m[k] || { y: Math.floor(k / 100), m: k % 100, n: 0, consumido: 0, blk: 0, presos: 0 };
+      o.n++; o.consumido += Math.max(0, (r.siN || 0) - (r.sfN || 0)); if (r.st === 'b6') { o.blk++; o.presos += r.presos; }
+    });
+    return Object.keys(m).map(Number).sort((a, b) => a - b).map(k => m[k]);
+  }
+
+  /** Categoria do envio para ALL de uma conta da aba bloqueadas. */
+  function allCategoria(r) {
+    if (r.tab !== 'B') return null;
+    const a = norm(r.all), o = norm(r.obs);
+    if (r.all === '✅' || a.includes('✅')) return 'ok';
+    if (/bloq/.test(a) || r.st === 'b6') return 'bloq';
+    if (/insuf/.test(a)) return 'insuf';
+    if (/cancel/.test(a) || /cancelado allcor|pedido cancelado/.test(o)) return 'canc';
+    if (/cod|tit off/.test(a)) return 'cod';
+    if (/erro|indispon/.test(a + ' ' + o)) return 'erro';
+    return 'sem';
+  }
+  /** Resultado do envio para ALL nas contas finalizadas/bloqueadas. */
+  function resultadoAll(rows) {
+    const g = { ok: 0, bloq: 0, insuf: 0, canc: 0, cod: 0, erro: 0, sem: 0 };
+    rows.forEach(r => { const c = allCategoria(r); if (c) g[c]++; });
+    return g;
+  }
+
+  /** Contas em uso ordenadas por consumo (saldo e CPFs). */
+  function emUso(rows) {
+    return rows.filter(r => r.st === 'uso').map(r => ({ r, pct: (r.siN && r.sfN != null) ? Math.max(0, Math.min(1, 1 - r.sfN / r.siN)) : null, cpfs: r.cpfuN })).sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
+  }
+
+  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts, usoPorMes, resultadoAll, allCategoria, emUso };
 })();
 if (typeof module !== 'undefined') module.exports = MP;
 
@@ -499,7 +582,7 @@ const { fmt, num } = MP;
 const ST_COLOR = { disp: 'st-disp', uso: 'st-uso', b6: 'st-b6', sol: 'st-sol', fin: 'st-fin', nab: 'st-fin', perda: 'st-perda' };
 const tagHtml = st => `<span class="tag" style="--c:var(--${ST_COLOR[st]});--d:var(--${ST_COLOR[st]}-d)"><i></i>${MP.ST[st].l}</span>`;
 
-const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), editing: false, timer: null };
+const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), custom: null, editing: false, timer: null };
 try { state.api = localStorage.getItem('mp-api') || API_URL_DEFAULT; } catch (_) { state.api = API_URL_DEFAULT; }
 const DEMO = window.__MP_DEMO__ || null;
 
@@ -615,11 +698,7 @@ function renderAll() {
   const AT = MP.AT, cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i' };
   $('#asum').innerHTML = Object.keys(AT).map(t => `<div class="alert ${cls[t]}" data-go="alertas"><span class="mark ${t}">${AT[t].ic}</span><div><b>${AT[t].l}</b><span>${AT[t].d}</span></div><div class="n">${A.filter(a => a.t === t).length}</div></div>`).join('');
 
-  const disp = D.filter(r => r.st === 'disp' || r.st === 'uso'), p = {};
-  disp.forEach(r => { const o = p[r.parcKey] = p[r.parcKey] || { n: r.parcN || '(sem parceiro)', c: 0, i: 0, v: 0 }; o.c++; if (r.st === 'disp') o.i++; o.v += r.sfN || 0; });
-  $('#tParc tbody').innerHTML = Object.values(p).sort((a, b) => b.v - a.v).map(o => `<tr><td>${esc(o.n)}</td><td class="num">${o.c}</td><td class="num">${o.i}</td><td class="num"><b>${fmt(o.v)}</b></td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhuma conta disponível</td></tr>';
-  $('#tSol tbody').innerHTML = D.filter(r => r.st === 'sol').sort((a, b) => b.presos - a.presos).map(r => `<tr><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.sfN != null ? r.sfN : r.siN)}</td><td class="cpf">${esc([r.obs, r.tel, r.agend].filter(Boolean).join(' · ').slice(0, 60))}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhum bloqueio em solicitação</td></tr>';
-
+  renderExtras(D, k);
   renderParceiros(); renderContas(); renderAlertas();
 }
 function renderChart(ser) {
@@ -631,16 +710,79 @@ function renderChart(ser) {
   for (let i = 0; i <= 3; i++) { const y = T + ph - ph * i / 3; s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${(max * i / 3 / 1e6).toFixed(1).replace('.', ',')} mi</text>`; }
   const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   ser.forEach((o, i) => { const x = L + pw * (i + .5) / ser.length - bw / 2, h = ph * o.v / max, y = T + ph - h, lab = `${MES[o.m]}/${String(o.y).slice(2)}`;
-    s += `<rect class="bar" x="${x}" y="${y}" width="${bw}" height="${h}" rx="4"><title>${lab}: ${fmt(o.v)} pts</title></rect><text class="val" x="${x + bw / 2}" y="${y - 6}" text-anchor="middle">${mi(o.v)}</text><text x="${x + bw / 2}" y="${H - 10}" text-anchor="middle">${lab}</text>`; });
+    s += `<rect class="bar" data-f="desbl:${o.y}-${o.m}" x="${x}" y="${y}" width="${bw}" height="${h}" rx="4"><title>${lab}: ${fmt(o.v)} pts — clique para ver as contas</title></rect><text class="val" x="${x + bw / 2}" y="${y - 6}" text-anchor="middle">${mi(o.v)}</text><text x="${x + bw / 2}" y="${H - 10}" text-anchor="middle">${lab}</text>`; });
   $('#chart').innerHTML = s;
+}
+
+/* ===================== painel: visões extras ===================== */
+const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const mi = n => (n / 1e6).toFixed(2).replace('.', ',') + ' mi';
+function vbars(id, ser, opt) {   // ser: [{lab, v, txt}]
+  const W = 640, H = 210, L = 52, R = 14, T = 24, B = 30, pw = W - L - R, ph = H - T - B;
+  if (!ser.length) { $(id).innerHTML = `<text x="320" y="110" text-anchor="middle">${opt.empty || 'Sem dados'}</text>`; return; }
+  const max = Math.max(...ser.map(s => s.v), 1), bw = Math.min(64, pw / ser.length * .6), f = opt.f || (n => fmt(n));
+  let s = '';
+  for (let i = 0; i <= 3; i++) { const y = T + ph - ph * i / 3; s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${(opt.axis || f)(max * i / 3)}</text>`; }
+  ser.forEach((o, i) => { const x = L + pw * (i + .5) / ser.length - bw / 2, h = ph * o.v / max, y = T + ph - h;
+    s += `<rect class="bar" ${o.f ? `data-f="${o.f}"` : ''} x="${x}" y="${y}" width="${bw}" height="${h}" rx="4"><title>${o.lab}: ${o.title || f(o.v)} — clique para ver as contas</title></rect><text class="val" x="${x + bw / 2}" y="${y - 6}" text-anchor="middle">${o.txt || f(o.v)}</text><text x="${x + bw / 2}" y="${H - 10}" text-anchor="middle">${o.lab}</text>`; });
+  $(id).innerHTML = s;
+}
+function hbars(id, items, total) {  // items: [{l, v, c, sub}]
+  const max = Math.max(...items.map(i => i.v), 1);
+  $(id).innerHTML = items.map(i => `<div class="hb" ${i.f ? `data-f="${i.f}"` : ''} title="Clique para ver as contas"><div class="l" title="${esc(i.l)}">${esc(i.l)}</div><div class="t"><i style="width:${(i.v / max * 100).toFixed(1)}%;${i.c ? '--c:' + i.c : ''}"></i></div><div class="v">${fmt(i.v)}${i.sub != null ? `<small>${i.sub}</small>` : total ? `<small>${Math.round(i.v / total * 100)}%</small>` : ''}</div></div>`).join('') || '<div class="empty">Sem dados</div>';
+}
+function renderExtras(D, k) {
+  // composição
+  const parts = [
+    { l: 'Disponível (intactas)', v: D.filter(r => r.st === 'disp').reduce((s, r) => s + (r.sfN || 0), 0), c: 'var(--st-disp)', f: 'st:disp' },
+    { l: 'Em uso', v: D.filter(r => r.st === 'uso').reduce((s, r) => s + (r.sfN || 0), 0), c: 'var(--st-uso)', f: 'st:uso' },
+    { l: 'Bloqueados 6 meses', v: k.b6.v, c: 'var(--st-b6)', f: 'st:b6' },
+    { l: 'Em solicitação', v: k.sol.v, c: 'var(--st-sol)', f: 'st:sol' },
+    { l: 'Golpe / fraude', v: k.perda.v, c: 'var(--st-perda)', f: 'st:perda' },
+  ];
+  const tot = parts.reduce((s, p) => s + p.v, 0) || 1;
+  $('#compTot').textContent = `${fmt(tot)} pontos em ${D.filter(r => ['disp', 'uso', 'b6', 'sol', 'perda'].includes(r.st)).length} contas`;
+  $('#comp').innerHTML = parts.filter(p => p.v > 0).map(p => `<i data-f="${p.f}" style="width:${(p.v / tot * 100).toFixed(2)}%;background:${p.c}" title="${p.l}: ${fmt(p.v)} — clique para ver as contas"></i>`).join('');
+  $('#compLeg').innerHTML = parts.map(p => `<span data-f="${p.f}" style="padding:2px 6px;border-radius:6px"><i style="background:${p.c}"></i>${p.l} <b>${fmt(p.v)}</b> · ${Math.round(p.v / tot * 100)}%</span>`).join('');
+
+  // uso por mês
+  const um = MP.usoPorMes(D);
+  vbars('#chartUso', um.map(o => ({ f: `uso:${o.y}-${o.m}`, lab: `${MES[o.m]}/${String(o.y).slice(2)}`, v: o.n, txt: `${o.n} · ${o.blk} bloq`, title: `${o.n} contas, ${o.blk} bloqueadas (${Math.round(o.blk / o.n * 100)}%)` })), { f: n => String(Math.round(n)), empty: 'Nenhuma conta com data de uso' });
+  vbars('#chartCons', um.map(o => ({ f: `uso:${o.y}-${o.m}`, lab: `${MES[o.m]}/${String(o.y).slice(2)}`, v: o.consumido, txt: mi(o.consumido) })), { axis: n => mi(n).replace(/,\d\d/, m => m.slice(0, 2)), empty: 'Nenhuma conta com data de uso' });
+
+  // disponível por parceiro
+  const disp = D.filter(r => r.st === 'disp' || r.st === 'uso'), p = {};
+  disp.forEach(r => { const o = p[r.parcKey] = p[r.parcKey] || { n: r.parcN || '(sem parceiro)', k: r.parcKey, c: 0, i: 0, v: 0 }; o.c++; if (r.st === 'disp') o.i++; o.v += r.sfN || 0; });
+  const ps = Object.values(p).sort((a, b) => b.v - a.v);
+  hbars('#hbParc', ps.slice(0, 10).map(o => ({ l: o.n, v: o.v, sub: `${o.c} conta${o.c > 1 ? 's' : ''}`, f: `parc:${o.k}` })));
+  $('#parcMore').textContent = ps.length > 10 ? `10 de ${ps.length} parceiros` : `${ps.length} parceiros`;
+
+  // em uso
+  const eu = MP.emUso(D);
+  $('#emUso').innerHTML = eu.slice(0, 12).map(x => `<div class="prog" data-f="conta:${x.r.tab}${x.r.row}" title="Clique para abrir a conta"><div class="n"><b>${esc(x.r.nome)}</b><small>${esc(x.r.parcN)} · saldo ${fmt(x.r.sfN)}${x.cpfs != null ? ` · ${x.cpfs} CPFs` : ''}</small></div><div class="t"><i class="${(x.pct || 0) > .6 || (x.cpfs || 0) >= 20 ? 'hot' : ''}" style="width:${((x.pct || 0) * 100).toFixed(0)}%"></i></div><div class="p">${x.pct == null ? '—' : Math.round(x.pct * 100) + '%'}</div></div>`).join('') + (eu.length > 12 ? `<div class="cpf" style="padding-top:6px" data-f="st:uso">+ ${eu.length - 12} contas em uso — ver todas</div>` : '') || '<div class="empty">Nenhuma conta em uso</div>';
+
+  // maiores presos
+  const presos = D.filter(r => r.st === 'b6').sort((a, b) => b.presos - a.presos).slice(0, 8);
+  $('#tPresos tbody').innerHTML = presos.map(r => `<tr data-f="conta:${r.tab}${r.row}"><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.presos)}</td><td class="cpf">${r.desbl || (r.usoD ? MP.fdate(MP.plusMonths(r.usoD, state.S.mesesBloqueio)) + ' (estimado)' : '—')}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhuma conta bloqueada</td></tr>';
+
+  // resultado ALL
+  const ra = MP.resultadoAll(D), totB = Object.values(ra).reduce((a, b) => a + b, 0);
+  hbars('#hbAll', [
+    { l: 'Enviado ✅', v: ra.ok, c: 'var(--st-disp)', f: 'all:ok' }, { l: 'Bloqueada', v: ra.bloq, c: 'var(--st-b6)', f: 'all:bloq' }, { l: 'Saldo insuficiente', v: ra.insuf, c: 'var(--st-fin)', f: 'all:insuf' },
+    { l: 'Pedido cancelado', v: ra.canc, c: 'var(--st-sol)', f: 'all:canc' }, { l: 'Pediu código / titular off', v: ra.cod, c: 'var(--st-sol)', f: 'all:cod' }, { l: 'Erro / indisponível', v: ra.erro, c: 'var(--st-perda)', f: 'all:erro' }, { l: 'Sem registro', v: ra.sem, c: 'var(--line)', f: 'all:sem' },
+  ].filter(i => i.v), totB);
+
+  // solicitação + cancelamentos
+  $('#tSol tbody').innerHTML = D.filter(r => r.st === 'sol').sort((a, b) => b.presos - a.presos).map(r => `<tr data-f="conta:${r.tab}${r.row}"><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.sfN != null ? r.sfN : r.siN)}</td><td class="cpf">${esc([r.obs, r.tel, r.agend].filter(Boolean).join(' · ').slice(0, 60))}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhum bloqueio em solicitação</td></tr>';
+  $('#tCanc tbody').innerHTML = D.filter(r => r.st === 'b6' && r.canc > 0).sort((a, b) => b.canc - a.canc).map(r => `<tr data-f="conta:${r.tab}${r.row}"><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.canc)}</td><td class="cpf">${r.desbl || '—'}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhum cancelamento registrado</td></tr>';
 }
 
 /* ===================== parceiros ===================== */
 function renderParceiros() {
   const pp = {};
-  state.rows.forEach(r => { const o = pp[r.parcKey || '~'] = pp[r.parcKey || '~'] || { n: r.parcN || '(sem parceiro)', c: 0, d: 0, u: 0, b: 0, s: 0, f: 0, pd: 0, pp: 0, al: 0 };
+  state.rows.forEach(r => { const o = pp[r.parcKey || '~'] = pp[r.parcKey || '~'] || { n: r.parcN || '(sem parceiro)', k: r.parcKey, c: 0, d: 0, u: 0, b: 0, s: 0, f: 0, pd: 0, pp: 0, al: 0 };
     o.c++; if (r.st === 'disp') { o.d++; o.pd += r.sfN || 0; } if (r.st === 'uso') { o.u++; o.pd += r.sfN || 0; } if (r.st === 'b6') o.b++; if (r.st === 'sol') o.s++; if (r.st === 'fin') o.f++; o.pp += r.presos; o.al += state.alerts.filter(a => a.r === r).length; });
-  $('#tParc2 tbody').innerHTML = Object.values(pp).sort((a, b) => b.pd - a.pd).map(o => `<tr><td><b>${esc(o.n)}</b></td><td class="num">${o.c}</td><td class="num">${o.d}</td><td class="num">${o.u}</td><td class="num">${o.b}</td><td class="num">${o.s}</td><td class="num">${o.f}</td><td class="num"><b>${fmt(o.pd)}</b></td><td class="num">${fmt(o.pp)}</td><td class="num">${o.al ? `<span class="mark div">${o.al}</span>` : '—'}</td></tr>`).join('');
+  $('#tParc2 tbody').innerHTML = Object.values(pp).sort((a, b) => b.pd - a.pd).map(o => `<tr data-f="parcall:${o.k || ''}" title="Clique para ver as contas"><td><b>${esc(o.n)}</b></td><td class="num">${o.c}</td><td class="num">${o.d}</td><td class="num">${o.u}</td><td class="num">${o.b}</td><td class="num">${o.s}</td><td class="num">${o.f}</td><td class="num"><b>${fmt(o.pd)}</b></td><td class="num">${fmt(o.pp)}</td><td class="num">${o.al ? `<span class="mark div">${o.al}</span>` : '—'}</td></tr>`).join('');
 }
 
 /* ===================== contas ===================== */
@@ -654,12 +796,12 @@ function cell(r, key, cls) {
 }
 function filteredRows() {
   const q = MP.norm($('#q').value), fo = $('#fOrig').value, fs = $('#fSec').value, sort = $('#fSort').value;
-  let rows = state.rows.filter(mine).filter(r => (!state.fSt.size || state.fSt.has(r.st)) && (!fo || r.tab === fo) && (!fs || `${r.tab}:${r.secIdx}` === fs) && (!q || MP.norm([r.nome, r.cpf, r.parc, r.obs, r.senha].join(' ')).includes(q)));
+  let rows = state.rows.filter(mine).filter(r => (!state.custom || state.custom.fn(r)) && (!state.fSt.size || state.fSt.has(r.st)) && (!fo || r.tab === fo) && (!fs || `${r.tab}:${r.secIdx}` === fs) && (!q || MP.norm([r.nome, r.cpf, r.parc, r.obs, r.senha].join(' ')).includes(q)));
   const by = { sf: (a, b) => (b.sfN || 0) - (a.sfN || 0), row: (a, b) => a.tab.localeCompare(b.tab) || a.row - b.row, nome: (a, b) => a.nome.localeCompare(b.nome, 'pt-BR'), uso: (a, b) => (b.usoD || 0) - (a.usoD || 0), parc: (a, b) => a.parcN.localeCompare(b.parcN, 'pt-BR') };
   return rows.sort(by[sort] || by.sf);
 }
 function renderContas() {
-  $('#chips').innerHTML = `<button class="chip" aria-pressed="${!state.fSt.size}" data-st="">Todas</button>` + Object.keys(MP.ST).map(k => `<button class="chip" aria-pressed="${state.fSt.has(k)}" data-st="${k}" style="--c:var(--${ST_COLOR[k]})"><i></i>${MP.ST[k].l} <span class="n">${state.rows.filter(mine).filter(r => r.st === k).length}</span></button>`).join('');
+  $('#chips').innerHTML = (state.custom ? `<span class="chipx">${esc(state.custom.label)}<button id="chipxOff" title="Tirar filtro">✕</button></span>` : '') + `<button class="chip" aria-pressed="${!state.fSt.size}" data-st="">Todas</button>` + Object.keys(MP.ST).map(k => `<button class="chip" aria-pressed="${state.fSt.has(k)}" data-st="${k}" style="--c:var(--${ST_COLOR[k]})"><i></i>${MP.ST[k].l} <span class="n">${state.rows.filter(mine).filter(r => r.st === k).length}</span></button>`).join('');
   const rows = filteredRows();
   const flags = r => [...new Set(state.alerts.filter(a => a.r === r).map(a => a.t))].map(t => `<span class="mark ${t}" title="${esc(state.alerts.filter(a => a.r === r && a.t === t).map(a => a.m).join('\n'))}">${MP.AT[t].ic}</span>`).join('');
   $('#tContas tbody').innerHTML = rows.map(r => `<tr data-id="${r.tab}${r.row}">
@@ -795,11 +937,28 @@ $('#btnCsv').onclick = () => {
   const csv = [H, ...rows.map(r => [MP.ST[r.st].l, r.tab === 'A' ? 'Ativa' : 'Bloqueadas', r.row, r.sec, r.parcN, r.nome, r.cpf, r.senha, r.siN ?? r.si, r.sfN ?? r.sf, r.cpfu, r.tab === 'A' ? r.agend : r.uso, r.desbl, r.all, r.tel || r.contato, r.obs])].map(l => l.map(q).join(';')).join('\r\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `controle-pontos-latam-${MP.fdate(new Date()).replace(/\//g, '-')}.csv`; a.click();
 };
-$('#chips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const k = b.dataset.st; if (!k) state.fSt.clear(); else state.fSt.has(k) ? state.fSt.delete(k) : state.fSt.add(k); renderContas(); };
+$('#chips').onclick = e => { if (e.target.id === 'chipxOff') { state.custom = null; renderContas(); return; } const b = e.target.closest('.chip'); if (!b) return; const k = b.dataset.st; if (!k) state.fSt.clear(); else state.fSt.has(k) ? state.fSt.delete(k) : state.fSt.add(k); renderContas(); };
 ['q', 'fOrig', 'fSec', 'fSort'].forEach(id => $('#' + id).addEventListener('input', renderContas));
 $('#fParcGlobal').onchange = () => { state.parc = $('#fParcGlobal').value; renderAll(); };
 $('#btnRefresh').onclick = () => load();
 document.addEventListener('click', e => { const k = e.target.closest('.kpi[data-st]'); if (k) { state.fSt = new Set([k.dataset.st]); if (k.dataset.st === 'disp') state.fSt.add('uso'); go('contas'); renderContas(); } });
+
+/* clique nos gráficos → Contas filtrada na fonte do número */
+const MESL = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+function applyF(f) {
+  const [k, v] = [f.slice(0, f.indexOf(':')), f.slice(f.indexOf(':') + 1)];
+  state.fSt.clear(); $('#q').value = ''; $('#fOrig').value = ''; $('#fSec').value = ''; state.custom = null;
+  if (k === 'st') { state.fSt = new Set([v]); }
+  else if (k === 'conta') { const r = findRow(v); if (r) { $('#q').value = r.cpfDigits || r.nome; } }
+  else if (k === 'desbl') { const [y, m] = v.split('-').map(Number); state.custom = { label: `Desbloqueio previsto em ${MESL[m]}/${y}`, fn: r => { if (r.st !== 'b6') return false; const d = MP.plusMonths(r.usoD, state.S.mesesBloqueio) || r.desblD; return !!d && d.getFullYear() === y && d.getMonth() === m; } }; }
+  else if (k === 'uso') { const [y, m] = v.split('-').map(Number); state.custom = { label: `Usadas em ${MESL[m]}/${y}`, fn: r => r.tab === 'B' && !!r.usoD && r.usoD.getFullYear() === y && r.usoD.getMonth() === m }; }
+  else if (k === 'parc') { const n = state.rows.find(r => r.parcKey === v)?.parcN || v; state.custom = { label: `Disponível de ${n}`, fn: r => r.parcKey === v && (r.st === 'disp' || r.st === 'uso') }; }
+  else if (k === 'parcall') { const n = state.rows.find(r => (r.parcKey || '') === v)?.parcN || '(sem parceiro)'; state.custom = { label: `Contas de ${n}`, fn: r => (r.parcKey || '') === v }; }
+  else if (k === 'all') { const L = { ok: 'Enviadas para ALL ✅', bloq: 'Bloqueadas no envio para ALL', insuf: 'Saldo insuficiente para ALL', canc: 'Pedido cancelado na ALL', cod: 'Pediu código / titular off', erro: 'Erro / indisponível no envio', sem: 'Sem registro de envio para ALL' }; state.custom = { label: L[v] || v, fn: r => MP.allCategoria(r) === v }; }
+  go('contas'); renderContas();
+  if (k === 'conta') { const tr = $(`#tContas tr[data-id="${v}"]`); if (tr) { tr.scrollIntoView({ block: 'center' }); tr.style.outline = '2px solid var(--accent)'; setTimeout(() => tr.style.outline = '', 2500); } }
+}
+document.addEventListener('click', e => { const el = e.target.closest('[data-f]'); if (!el || e.target.closest('[contenteditable]')) return; e.preventDefault(); applyF(el.dataset.f); });
 
 /* navegação */
 const TITLES = { painel: 'Painel', contas: 'Contas', alertas: 'Alertas', parceiros: 'Parceiros', origem: 'Origem e migração', ajustes: 'Ajustes' };
