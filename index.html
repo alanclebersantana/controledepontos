@@ -60,14 +60,20 @@ a{color:var(--accent)}
 input,select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:7px 10px;color:var(--text)}
 input:focus,select:focus,textarea:focus,[contenteditable]:focus{outline:2px solid var(--accent-dim);outline-offset:0;border-color:var(--accent)}
 
-.app{display:grid;grid-template-columns:236px 1fr;height:100dvh;overflow:hidden}
+.app{display:grid;grid-template-columns:200px 1fr;height:100dvh;overflow:hidden}
+.app.mini{grid-template-columns:60px 1fr}
+.app.mini .brand div,.app.mini .nav button span.lbl,.app.mini .nav .gr,.app.mini .rail-foot{display:none}
+.app.mini .nav button{justify-content:center;padding:10px 0}.app.mini .nav .badge{position:absolute;margin:0;transform:translate(14px,-12px)}.app.mini .nav button{position:relative}
+.app.mini .brand{justify-content:center;padding:14px 8px}
+.railtg{position:absolute;right:-12px;top:18px;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--muted);font-size:12px;display:grid;place-items:center;z-index:6}
+.rail{position:relative}
 .rail{background:var(--nav-bg);background-image:var(--stripe);border-right:1px solid var(--nav-line);display:flex;flex-direction:column;min-height:0;color:var(--nav-text)}
-.brand{padding:16px 16px 14px;border-bottom:1px solid var(--nav-line);display:flex;align-items:center;gap:10px}
+.brand{padding:14px 12px 12px;border-bottom:1px solid var(--nav-line);display:flex;align-items:center;gap:9px}
 .logo{width:32px;height:32px;border-radius:9px;flex:0 0 auto;display:block}
-.brand b{font-size:14px;line-height:1.2;display:block}
+.brand b{font-size:12.5px;line-height:1.2;display:block;white-space:nowrap}
 .brand small{color:var(--nav-muted-2);font-size:11.5px}
 .nav{padding:10px;display:flex;flex-direction:column;gap:2px}
-.nav button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border-radius:var(--rs);color:var(--nav-muted);font-weight:600;text-align:left;transition:background .12s,color .12s}
+.nav button{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;font-size:13.5px;border-radius:var(--rs);color:var(--nav-muted);font-weight:600;text-align:left;transition:background .12s,color .12s}
 .nav button svg{width:17px;height:17px;flex:0 0 auto}
 .nav button:hover{background:var(--nav-hover);color:var(--nav-text)}
 .nav button.on{background:var(--nav-on-bg);color:var(--nav-on-text)}
@@ -132,6 +138,12 @@ table.grid{border-collapse:separate;border-spacing:0;width:100%;font-size:13px}
 table.grid thead th{position:sticky;top:0;z-index:3;background:var(--bg-2);border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;font-size:11.5px;font-weight:800;color:var(--muted-2);white-space:nowrap;cursor:pointer;user-select:none}
 table.grid thead th:hover{color:var(--text)}
 table.grid td{border-bottom:1px solid var(--line-soft);padding:0 8px;height:36px;vertical-align:middle;white-space:nowrap}
+table.grid.fit{table-layout:fixed;font-size:12.5px}
+table.grid.fit td{padding:4px 6px;height:auto;overflow:hidden;text-overflow:ellipsis}
+table.grid.fit th{padding:7px 6px}
+table.grid.fit td small{display:block;color:var(--muted-2);font-size:11px;overflow:hidden;text-overflow:ellipsis}
+table.grid.fit .tag{font-size:11px;padding:1px 7px}
+.tbl.fit{overflow-x:hidden}
 table.grid tbody tr:hover td{background:var(--hover)}
 table.grid td.num,table.grid th.num{text-align:right}
 table.grid tr:last-child td{border-bottom:0}
@@ -140,7 +152,7 @@ table.grid tr:last-child td{border-bottom:0}
 .mark{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;font-size:10.5px;font-weight:800;color:#fff;margin-right:2px;cursor:help}
 .mark.dup{background:var(--roxo)}.mark.div{background:var(--warn)}.mark.miss{background:#6E7885}.mark.ate{background:var(--info)}
 .cpf{color:var(--muted)}.pw{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted)}
-.cell{display:inline-block;min-width:24px;outline:1px dashed transparent;border-radius:4px;padding:1px 4px;margin:-1px -4px}
+.cell{display:inline-block;min-width:24px;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom;outline:1px dashed transparent;border-radius:4px;padding:1px 4px;margin:-1px -4px}
 .cell:hover{outline-color:var(--line)}
 .cell:focus{outline:2px solid var(--accent-dim);background:var(--accent-dim)}
 .cell.saving{opacity:.5}
@@ -218,6 +230,7 @@ h2.sec{font-size:13.5px;margin:18px 0 8px;color:var(--muted)}
 kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12px}
 
 @media (max-width:980px){
+  .railtg{display:none}.app.mini{grid-template-columns:1fr}.app.mini .brand div,.app.mini .nav button span.lbl,.app.mini .rail-foot{display:initial}
   .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
   .rail{flex-direction:row;align-items:center;overflow:auto;border-right:0;border-bottom:1px solid var(--nav-line)}
   .brand{border:0;padding:10px 12px}.brand small{display:none}
@@ -233,15 +246,16 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
 <div class="app">
 
 <aside class="rail">
+  <button class="railtg" id="railTg" title="Recolher menu">‹</button>
   <div class="brand"><img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAMAAABGS8AGAAAAYFBMVEX03VgDJSqVnVNWaTopSTQAAABnrqxic0r3lB0qXVr57l/13lh3hEbHvE/8/Ab03ld1wL55xMKhcCP/vz//fwD/f3//qlV/f38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABuDXH5AAAAGHRSTlP+/////wD/////EaX//wFf////BAICAwJQRH6XAAADxUlEQVR42u2Za3ekIAyGJQnFu9tO2/3//3S5qRCCtR09+6U5p6fjDDy+hhCINLofmmdtGJZea+3+Nmsu4Ab4Mus5QTcXcZ0tqejmSht63c93gJ3o+e8t4GaY9cctYOuO+f0WcDM8PudbwM2gHwyMqmKY90zbEcJUjmCfgUnVLe1X/EjAyL2dKfsVWGUgGmaaMW03IgnoQX/qtAPVvJb9RMwzk3HokTvjFNgU4BHz3/k4nASXipXKHn4iRu5/6ApgYD/ymHn5EAzRdwUY8ziJ5PRegisAEq5SkwTmAxij8BDswicEvefK4KAOgT1ecreFg2GbUWafdAxswN+PmD8wqIhO5uBJmswc7K9XheMqdFKCg/beICSJUvG4CbYPRsdxtX09AbLkI828GHEmGbMyCIveeAhWftQIGdf54gvwqpgqYGumCf7NBpBEJ68+TvNtHezFAUuoB2DXNPTEOhjbNwyOIsqmFNbBo9r0RFUiuG3fNk8BJe3qrqDtOekQ3LYYyJiNRR08TRATFW1DJINbv7CASkLhAEwqrD1RCh6BHRkazFYtGezSoRsKtWWN8RDc7k5owN2gqthxbdvoAsCxOQa/BTfYJTUse7VwU4HrY/lwBWkzybRN05rilfvl0tQmkkPoh9RcBUNl2SM289pEMuzzA+S86fMlSaay5AJps6yLkpNQnokPNm9YbzfKq/xkUDamAyrNDDS/9mu/9gObTn45ne58nARo4nXBqXrw6TovUVBJbt+v83i78atl4ht13tm927k6ryYA71H8n8CA94BBCJorwMDC0a/tF4DjxjstGuAKsN8Iwl5hYdgrPwvGwIWNbIHGfobxSbCK3JXsuY5MT4HHnRvIkevIT4Eh4Xqy3SablczBgJS8YbLVhd9vymCbDrskVXmdEUzCi5AkLLcNMtaqdAUymYMdtzPdXkV2Xef3nTLYtjAymYrKtHuxZtb8btxVx6bWkL/WEckF2HNf/gRYZz+sZBLfsUDu5Z3MwJ5kn/7l1QPtP3fh70PiWyHnZSOROfg1SI3Ct4vXKtitkxK5UOzHayV365XJwHpgsSyQy8FTGdHz+TKtez5LSj8refCiD9Kr1BWZ5JCPi6jjrtis88O2GuXgRUhGZPbZ3R2Ac8v2Hzr3cnyzkW1v6nVebCDWebqf+2IOIv2szkvrMXc+tAhbR1vS1+o3qNSDY7Z31Fo/9IUnWSl47ufhFrCe328g+xOneb7eG3olL7eAtZ0o/XAH2J9KLtehlx2se4u+7Gj20aRHvu7As+8v0L18zP8AmtYi63DWszMAAAAASUVORK5CYII=" alt="Milhas Plus"><div><b>MP Controle de Pontos</b><small>LATAM · bombas 1.250kk / 1.5kk</small></div></div>
   <nav class="nav" id="nav">
-    <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>Painel</button>
-    <button data-v="contas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg>Contas</button>
-    <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>Alertas<span class="badge" id="nAl"></span></button>
-    <button data-v="parceiros"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 4h5M16 8h5M16 12h3"/></svg>Parceiros</button>
+    <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg><span class="lbl">Painel</span></button>
+    <button data-v="contas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg><span class="lbl">Contas</span></button>
+    <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span class="lbl">Alertas</span><span class="badge" id="nAl"></span></button>
+    <button data-v="parceiros"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 4h5M16 8h5M16 12h3"/></svg><span class="lbl">Parceiros</span></button>
     <div class="gr">DADOS</div>
-    <button data-v="origem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Origem e migração</button>
-    <button data-v="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+    <button data-v="origem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg><span class="lbl">Origem e migração</span></button>
+    <button data-v="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="lbl">Ajustes</span></button>
   </nav>
   <div class="rail-foot"><span class="dot busy" id="dot"></span><span id="syncTxt">Conectando…</span>
     <select id="fParcGlobal" aria-label="Filtrar parceiro"><option value="">Todos os parceiros</option></select>
@@ -297,10 +311,10 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
       <select id="fSort"><option value="sf">Ordenar: saldo final ↓</option><option value="row">Ordem da planilha</option><option value="nome">Titular A–Z</option><option value="uso">Data de uso ↓</option><option value="parc">Parceiro A–Z</option></select>
       <span style="flex:1"></span><button class="btn" id="btnCsv">Exportar CSV</button>
     </div>
-    <div class="tbl"><table class="grid" id="tContas"><thead><tr>
-      <th></th><th>Status</th><th>Titular</th><th>CPF</th><th>Senha LATAM</th><th>Parceiro</th>
+    <div class="tbl fit"><table class="grid fit" id="tContas"><colgroup><col style="width:38px"><col style="width:124px"><col style="width:190px"><col style="width:96px"><col style="width:128px"><col style="width:88px"><col style="width:88px"><col style="width:44px"><col style="width:86px"><col style="width:62px"><col><col style="width:36px"></colgroup><thead><tr>
+      <th></th><th>Status</th><th>Titular · CPF</th><th>Senha</th><th>Parceiro · tel.</th>
       <th class="num">Saldo inicial</th><th class="num">Saldo final</th><th class="num">CPFs</th>
-      <th>Agend. / Uso</th><th>Desbloqueio</th><th>ALL</th><th>Telefone</th><th>Obs.</th><th>Seção</th><th></th>
+      <th>Uso · desbl.</th><th>ALL</th><th>Obs. · seção</th><th></th>
     </tr></thead><tbody></tbody></table></div>
     <div class="tfoot"><span id="tfL"></span><span id="tfR"></span></div>
   </section>
@@ -580,7 +594,8 @@ const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const { fmt, num } = MP;
 const ST_COLOR = { disp: 'st-disp', uso: 'st-uso', b6: 'st-b6', sol: 'st-sol', fin: 'st-fin', nab: 'st-fin', perda: 'st-perda' };
-const tagHtml = st => `<span class="tag" style="--c:var(--${ST_COLOR[st]});--d:var(--${ST_COLOR[st]}-d)"><i></i>${MP.ST[st].l}</span>`;
+const ST_SHORT = { b6: 'Bloq. 6 meses', sol: 'Bloq. solicitação', nab: 'Não abastecida', perda: 'Golpe/fraude' };
+const tagHtml = (st, short) => `<span class="tag" style="--c:var(--${ST_COLOR[st]});--d:var(--${ST_COLOR[st]}-d)"><i></i>${short ? (ST_SHORT[st] || MP.ST[st].l) : MP.ST[st].l}</span>`;
 
 const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), custom: null, editing: false, timer: null };
 try { state.api = localStorage.getItem('mp-api') || API_URL_DEFAULT; } catch (_) { state.api = API_URL_DEFAULT; }
@@ -805,15 +820,18 @@ function renderContas() {
   const rows = filteredRows();
   const flags = r => [...new Set(state.alerts.filter(a => a.r === r).map(a => a.t))].map(t => `<span class="mark ${t}" title="${esc(state.alerts.filter(a => a.r === r && a.t === t).map(a => a.m).join('\n'))}">${MP.AT[t].ic}</span>`).join('');
   $('#tContas tbody').innerHTML = rows.map(r => `<tr data-id="${r.tab}${r.row}">
-    <td>${flags(r)}</td><td>${tagHtml(r.st)}</td><td><b>${cell(r, 'nome')}</b></td><td>${cell(r, 'cpf', 'cpf')}</td><td>${cell(r, 'senha', 'pw')}</td><td>${cell(r, 'parc')}</td>
+    <td>${flags(r)}</td><td>${tagHtml(r.st, true)}</td>
+    <td><b>${cell(r, 'nome')}</b><small>${cell(r, 'cpf', 'cpf')}</small></td>
+    <td>${cell(r, 'senha', 'pw')}</td>
+    <td>${cell(r, 'parc')}<small>${r.tab === 'A' ? cell(r, 'tel', 'cpf') : cell(r, 'contato', 'cpf')}</small></td>
     <td class="num">${cell(r, 'si')}</td><td class="num">${cell(r, 'sf')}</td><td class="num">${cell(r, 'cpfu')}</td>
-    <td>${r.tab === 'A' ? cell(r, 'agend') : cell(r, 'uso')}</td><td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'desbl')}</td><td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'all')}</td>
-    <td>${r.tab === 'A' ? cell(r, 'tel', 'cpf') : cell(r, 'contato', 'cpf')}</td><td class="obs" title="${esc(r.obs)}">${cell(r, 'obs', 'cpf')}</td>
-    <td class="cpf" title="${esc(r.sec)}">${r.tab === 'A' ? 'Ativa' : 'Bloq'} · ${esc(r.sec.slice(0, 26))}</td>
+    <td>${r.tab === 'A' ? cell(r, 'agend') : cell(r, 'uso')}<small>${r.tab === 'A' ? '' : cell(r, 'desbl')}</small></td>
+    <td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'all')}</td>
+    <td title="${esc(r.obs)}&#10;${esc(r.sec)}">${cell(r, 'obs', 'cpf')}<small>${r.tab === 'A' ? 'Ativa' : 'Bloq'} · ${esc(r.sec)}</small></td>
     <td><div class="rowmenu"><button class="btn sm" data-menu="${r.tab}${r.row}">⋯</button><div class="mn">
       <a href="${sheetLink(r)}" target="_blank" rel="noopener">Abrir na planilha</a>
       <button data-act="move" data-id="${r.tab}${r.row}">${r.tab === 'A' ? 'Mover para bloqueadas' : 'Mover para aba ativa'}</button>
-      <button data-act="del" data-id="${r.tab}${r.row}" class="danger">Excluir linha</button></div></div></td></tr>`).join('') || `<tr><td colspan="16" class="empty">Nenhuma conta com esses filtros</td></tr>`;
+      <button data-act="del" data-id="${r.tab}${r.row}" class="danger">Excluir linha</button></div></div></td></tr>`).join('') || `<tr><td colspan="12" class="empty">Nenhuma conta com esses filtros</td></tr>`;
   $('#tfL').textContent = `${rows.length} de ${state.rows.filter(mine).length} contas`;
   $('#tfR').textContent = `Saldo final somado: ${fmt(rows.reduce((s, r) => s + (r.sfN || 0), 0))} pts`;
 }
@@ -965,6 +983,11 @@ const TITLES = { painel: 'Painel', contas: 'Contas', alertas: 'Alertas', parceir
 function go(v) { $$('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); $$('.nav button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('#tTitle').textContent = TITLES[v]; $('#btnNew').style.display = v === 'contas' || v === 'painel' ? '' : 'none'; try { location.hash = v; } catch (_) {} }
 $('#nav').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.v); };
 document.body.addEventListener('click', e => { const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); go(a.dataset.go); } });
+
+/* menu recolhido */
+const app = $('.app'); try { if (localStorage.getItem('mp-rail') === 'mini') app.classList.add('mini'); } catch (_) {}
+const syncRail = () => { $('#railTg').textContent = app.classList.contains('mini') ? '›' : '‹'; $('#railTg').title = app.classList.contains('mini') ? 'Expandir menu' : 'Recolher menu'; }; syncRail();
+$('#railTg').onclick = () => { app.classList.toggle('mini'); try { localStorage.setItem('mp-rail', app.classList.contains('mini') ? 'mini' : ''); } catch (_) {} syncRail(); };
 
 /* tema */
 const root = document.documentElement;
