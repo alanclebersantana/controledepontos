@@ -140,6 +140,8 @@ table.grid thead th:hover{color:var(--text)}
 table.grid td{border-bottom:1px solid var(--line-soft);padding:0 8px;height:36px;vertical-align:middle;white-space:nowrap}
 table.grid.fit{table-layout:fixed;font-size:12.5px}
 table.grid.fit td{padding:4px 6px;height:auto;overflow:hidden;text-overflow:ellipsis}
+table.grid.fit td.mcol{overflow:visible}
+.rowmenu.open{z-index:7;position:relative}
 table.grid.fit th{padding:7px 6px}
 table.grid.fit td small{display:block;color:var(--muted-2);font-size:11px;overflow:hidden;text-overflow:ellipsis}
 table.grid.fit .tag{font-size:11px;padding:1px 7px}
@@ -150,7 +152,8 @@ table.grid tr:last-child td{border-bottom:0}
 .tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;background:var(--d);color:var(--c)}
 .tag i{width:6px;height:6px;border-radius:50%;background:currentColor}
 .mark{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;font-size:10.5px;font-weight:800;color:#fff;margin-right:2px;cursor:help}
-.mark.dup{background:var(--roxo)}.mark.div{background:var(--warn)}.mark.miss{background:#6E7885}.mark.ate{background:var(--info)}
+.mark.dup{background:var(--roxo)}.mark.div{background:var(--warn)}.mark.miss{background:#6E7885}.mark.ate{background:var(--info)}.mark.vend{background:var(--accent)}
+.alert.v{border-left-color:var(--accent)}
 .cpf{color:var(--muted)}.pw{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted)}
 .cell{display:inline-block;min-width:24px;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom;outline:1px dashed transparent;border-radius:4px;padding:1px 4px;margin:-1px -4px}
 .cell:hover{outline-color:var(--line)}
@@ -207,6 +210,17 @@ h2.sec{font-size:13.5px;margin:18px 0 8px;color:var(--muted)}
 .prog .t i.hot{background:var(--warn)}
 .prog .p{text-align:right;font-weight:700}
 .chart.sm{height:180px}
+.confcard{border:2px solid var(--accent);background:linear-gradient(var(--accent-dim),transparent 45%) var(--surface)}
+.confk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 10px}
+.confk>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:8px 12px;cursor:pointer}
+.confk>div:hover{background:var(--hover)}
+.cx{white-space:nowrap}
+table.grid.fit td.cx small,td.cx small{display:inline;color:var(--muted-2);margin:0 4px;font-size:11px}
+.confk .lab{font-size:11.5px;color:var(--muted-2);font-weight:700}.confk .val{font-size:20px;font-weight:800}
+.ok{color:var(--ok);font-weight:800}.bad{color:var(--bad);font-weight:800}.na{color:var(--muted-2)}
+.vd{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:800}
+.vd.ok{background:var(--ok-dim);color:var(--ok)}.vd.div{background:var(--bad-dim);color:var(--bad)}.vd.sem{background:var(--warn-dim);color:var(--warn)}.vd.na{background:var(--surface-2);color:var(--muted-2)}
+@media (max-width:980px){.confk{grid-template-columns:1fr 1fr}}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
 @media (max-width:980px){.grid3{grid-template-columns:1fr}.hb{grid-template-columns:110px 1fr 80px}}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
@@ -252,6 +266,7 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
     <button data-v="painel" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg><span class="lbl">Painel</span></button>
     <button data-v="contas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg><span class="lbl">Contas</span></button>
     <button data-v="alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span class="lbl">Alertas</span><span class="badge" id="nAl"></span></button>
+    <button data-v="vendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg><span class="lbl">Registro de vendas</span><span class="badge" id="nVd"></span></button>
     <button data-v="parceiros"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 4h5M16 8h5M16 12h3"/></svg><span class="lbl">Parceiros</span></button>
     <div class="gr">DADOS</div>
     <button data-v="origem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg><span class="lbl">Origem e migração</span></button>
@@ -273,6 +288,13 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
     <div id="errBox"></div>
     <div class="kpis" id="kpis"></div>
     <div class="kpis2" id="kpis2"></div>
+
+    <div class="card confcard" style="margin-bottom:12px">
+      <div class="hd"><h2>Conferência com o Registro de Vendas</h2><span id="confSub">lendo o Registro…</span></div>
+      <div class="confk" id="confK"></div>
+      <div class="filters" style="margin-bottom:8px"><select id="confF"><option value="">Mostrar: divergentes e sem registro primeiro</option><option value="div">Só divergentes</option><option value="sem">Só sem registro</option><option value="ok">Só as que batem</option></select><input type="search" id="confQ" placeholder="Buscar titular ou parceiro"><span style="flex:1"></span><a href="#" data-go="vendas">ver página completa do Registro</a></div>
+      <div class="tbl fit" style="max-height:380px"><table class="grid fit" id="tConf"><colgroup><col style="width:19%"><col style="width:12%"><col style="width:10%"><col><col><col style="width:12%"><col style="width:11%"></colgroup><thead><tr><th>Titular</th><th>Parceiro</th><th>Status</th><th class="num">Saída: Controle × Registro</th><th class="num">Saldo: Controle × esperado</th><th class="num">CPFs: C × R</th><th>Resultado</th></tr></thead><tbody></tbody></table></div>
+    </div>
 
     <div class="card" style="margin-bottom:12px"><div class="hd"><h2>Onde estão os pontos</h2><span id="compTot"></span></div><div class="comp" id="comp"></div><div class="legend" id="compLeg"></div></div>
 
@@ -321,6 +343,30 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
 
   <section class="view" id="v-alertas"><div id="agroups"></div></section>
 
+
+  <section class="view" id="v-vendas">
+    <div id="vdErr"></div>
+    <div class="kpis" id="vdKpis" style="grid-template-columns:repeat(3,1fr)"></div>
+    <div class="kpis2" id="vdKpis2"></div>
+    <div class="callout i" style="margin:0 0 12px;display:flex;gap:12px;align-items:center"><span style="flex:1">O Registro de Vendas é lido, nunca alterado. Cruzamento: vendas com COMPANHIA LATAM, CPF da coluna CONTA. Milhas vendidas × consumido no Controle (saldo inicial − final) e "CPFs Utilizados" (de AGO/26 em diante) × "CPF UTILIZADOS" do Controle.</span><button class="btn" id="btnSales">Reler o Registro</button></div>
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Contas usadas sem venda no Registro</h2><span>não inseridas no registro de vendas</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tSemVenda"><thead><tr><th>Titular</th><th>Parceiro</th><th>Status</th><th class="num">Consumido</th><th>Uso</th></tr></thead><tbody></tbody></table></div></div>
+      <div class="card"><div class="hd"><h2>Milhas faltando no Registro</h2><span>consumido no Controle &gt; vendido</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tFalta"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Consumido</th><th class="num">Vendido</th><th class="num">Faltam</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>CPFs utilizados divergentes</h2><span>Controle × Registro (AGO/26 em diante)</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tCpf"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Controle</th><th class="num">Registro</th><th class="num">Emissões</th></tr></thead><tbody></tbody></table></div></div>
+      <div class="card"><div class="hd"><h2>Intactas no Controle com vendas</h2><span>saldo cheio, mas já emitiram</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tIntacta"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Vendas</th><th class="num">Milhas</th><th>Meses</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="hd"><h2>Registro acima do consumido</h2><span>saldo desatualizado no Controle ou conta reabastecida</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tSobra"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Consumido</th><th class="num">Vendido</th><th class="num">Diferença</th></tr></thead><tbody></tbody></table></div></div>
+      <div class="card"><div class="hd"><h2>Vendas com outro fornecedor</h2><span>conta do Controle registrada fora de "Milhas Plus"</span></div><div class="tbl" style="max-height:340px"><table class="grid" id="tForn"><thead><tr><th>Titular</th><th>Parceiro</th><th class="num">Vendas</th><th>Detalhe</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="card"><div class="hd"><h2>CPFs vendidos como "Milhas Plus (Contas Nossa)" que não estão no Controle</h2><span id="othersSub"></span></div>
+      <div class="filters"><input type="search" id="qOthers" placeholder="Buscar CPF ou responsável"><select id="fOthersMes"><option value="">Todos os meses</option></select></div>
+      <div class="tbl" style="max-height:420px"><table class="grid" id="tOthers"><thead><tr><th>CPF</th><th class="num">Emissões</th><th class="num">Milhas</th><th class="num">CPFs</th><th>Meses</th><th>Responsáveis</th><th></th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
   <section class="view" id="v-parceiros">
     <div class="tbl"><table class="grid" id="tParc2"><thead><tr><th>Parceiro</th><th class="num">Contas</th><th class="num">Disponíveis</th><th class="num">Em uso</th><th class="num">Bloq. 6 meses</th><th class="num">Em solicitação</th><th class="num">Finalizadas</th><th class="num">Pontos disponíveis</th><th class="num">Pontos presos</th><th class="num">Alertas</th></tr></thead><tbody></tbody></table></div>
     <div class="callout i">Grafias diferentes do mesmo parceiro aparecem como linhas separadas. Cadastre o apelido em Ajustes para juntar.</div>
@@ -365,6 +411,10 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
         <label>Prazo padrão de bloqueio (meses)<input id="sMeses" type="number" min="1" max="24"></label>
         <label>Alertar "em uso" parado após (dias)<input id="sDias" type="number" min="1"></label>
         <label>Conferir mudanças na planilha a cada (segundos)<input id="sRef" type="number" min="2" max="120"></label>
+        <label>Registro de vendas: tolerância de milhas (pts)<input id="sTolM" type="number" min="0" step="1000"></label>
+        <label>Registro de vendas: tolerância (%)<input id="sTolP" type="number" min="0" max="100"></label>
+        <label>Registro de vendas: tolerância de CPFs<input id="sTolC" type="number" min="0"></label>
+        <label>Registro acima do consumido: avisar a partir de (pts)<input id="sTolS" type="number" min="0" step="10000"></label>
         <label class="full">Apelidos de parceiro — uma linha por grafia: <kbd>grafia = nome certo</kbd><textarea id="sAlias" placeholder="Winius Garcia = Winicius Garcia&#10;Micael temus = Micael Ternus&#10;Milena = Milena Sousa"></textarea></label>
       </div>
       <div class="modal acts" style="padding:0;border:0;background:none;max-height:none"><button class="btn primary" id="btnSaveSettings">Salvar ajustes</button></div>
@@ -493,6 +543,7 @@ const MP = (() => {
     div:  { l: 'Divergência', d: 'valores que não batem entre si', ic: '!' },
     miss: { l: 'Campos faltantes', d: 'informação obrigatória em branco', ic: '?' },
     ate:  { l: 'Atenção', d: 'situações que merecem olhar', ic: 'i' },
+    vend: { l: 'Registro de vendas', d: 'conta não bate com o registro de vendas', ic: 'V' },
   };
 
   function alerts(rows, S, now) {
@@ -580,7 +631,59 @@ const MP = (() => {
     return rows.filter(r => r.st === 'uso').map(r => ({ r, pct: (r.siN && r.sfN != null) ? Math.max(0, Math.min(1, 1 - r.sfN / r.siN)) : null, cpfs: r.cpfuN })).sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
   }
 
-  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts, usoPorMes, resultadoAll, allCategoria, emUso };
+  const padCpf = d => { d = String(d || '').replace(/\D/g, ''); return (d.length >= 9 && d.length <= 11) ? d.padStart(11, '0') : d; };
+
+  /**
+   * Cruzamento com o Registro de Vendas. sales = resposta da API (found por CPF, others, months).
+   * Anota em cada linha r.v (vendas) e r.vx (lista de problemas) e devolve o resumo.
+   */
+  function vendas(rows, sales, S) {
+    const F = (sales && sales.found) || {};
+    const tol = r => Math.max(S.tolMilhas || 15000, (r.cons || 0) * ((S.tolPct || 10) / 100));
+    const issues = [];
+    rows.forEach(r => {
+      const v = F[padCpf(r.cpfDigits)] || null;
+      r.v = v; r.vx = [];
+      r.cons = (r.siN != null && r.sfN != null) ? Math.max(0, r.siN - r.sfN) : null;
+      const usada = r.cons == null ? !['disp', 'nab', 'perda'].includes(r.st) : r.cons > 50000;
+      if (!v) { if (usada) r.vx.push({ t: 'semVenda', m: 'Conta usada sem nenhuma venda no Registro' }); }
+      else {
+        if (r.st === 'disp' && v.n > 0) r.vx.push({ t: 'intactaComVenda', m: `Consta intacta no Controle, mas tem ${v.n} venda${v.n > 1 ? 's' : ''} (${fmt(v.mi)} milhas) no Registro — atualizar saldo` });
+        if (r.cons != null && r.siN > 0) {
+          const d = r.cons - v.mi;
+          if (d > tol(r)) r.vx.push({ t: 'falta', m: `Consumiu ${fmt(r.cons)} no Controle, mas só ${fmt(v.mi)} vendidas no Registro — faltam ${fmt(d)} milhas`, d });
+          else if (-d > Math.max(tol(r), S.tolSobra || 100000) && r.st !== 'disp') r.vx.push({ t: 'sobra', m: `Registro tem ${fmt(v.mi)} milhas vendidas, acima do consumido no Controle (${fmt(r.cons)}) — saldo desatualizado ou reabastecida`, d: -d });
+        }
+        if (v.un > 0 && r.cpfuN != null && Math.abs(v.u - r.cpfuN) > (S.tolCpf == null ? 2 : S.tolCpf)) r.vx.push({ t: 'cpf', m: `CPFs utilizados: ${r.cpfuN} no Controle × ${v.u} no Registro (${v.un} de ${v.n} emissões com o campo preenchido)`, d: v.u - r.cpfuN });
+        if (v.mp < v.n) r.vx.push({ t: 'forn', m: `${v.n - v.mp} venda${v.n - v.mp > 1 ? 's' : ''} desta conta registrada${v.n - v.mp > 1 ? 's' : ''} com outro fornecedor` });
+      }
+      // veredito por conta (conferência): saída, saldo e CPFs
+      const c = { saida: 'na', saldo: 'na', cpf: 'na', geral: 'na', esperado: null };
+      if (v) {
+        if (r.cons != null && r.siN > 0) { const d = Math.abs(r.cons - v.mi); c.saida = d <= tol(r) ? 'ok' : 'div'; c.esperado = r.siN - v.mi; c.saldo = Math.abs(r.sfN - c.esperado) <= tol(r) ? 'ok' : 'div'; }
+        if (v.un > 0 && r.cpfuN != null) c.cpf = Math.abs(v.u - r.cpfuN) <= (S.tolCpf == null ? 2 : S.tolCpf) ? 'ok' : 'div';
+        c.geral = (c.saida === 'div' || c.cpf === 'div' || (r.st === 'disp' && v.n > 0)) ? 'div' : 'ok';
+      } else c.geral = usada ? 'sem' : 'na';
+      r.conf = c;
+      r.vx.forEach(x => issues.push({ r, t: x.t, m: x.m, d: x.d || 0 }));
+    });
+    const by = t => issues.filter(i => i.t === t);
+    const others = (sales && sales.others) || [];
+    return {
+      issues,
+      semVenda: by('semVenda'), falta: by('falta'), sobra: by('sobra'), cpf: by('cpf'), intacta: by('intactaComVenda'), forn: by('forn'),
+      faltaTotal: by('falta').reduce((a, i) => a + i.d, 0),
+      comVenda: rows.filter(r => r.v).length,
+      conf: { ok: rows.filter(r => r.conf.geral === 'ok').length, div: rows.filter(r => r.conf.geral === 'div').length, sem: rows.filter(r => r.conf.geral === 'sem').length },
+      milhasRegistro: rows.reduce((a, r) => a + (r.v ? r.v.mi : 0), 0),
+      consumido: rows.reduce((a, r) => a + (r.cons || 0), 0),
+      others, othersTotal: (sales && sales.othersTotal) || others.length,
+      othersMilhas: others.reduce((a, o) => a + o.mi, 0),
+      months: (sales && sales.months) || {},
+    };
+  }
+
+  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts, usoPorMes, resultadoAll, allCategoria, emUso, vendas, padCpf };
 })();
 if (typeof module !== 'undefined') module.exports = MP;
 
@@ -597,9 +700,10 @@ const ST_COLOR = { disp: 'st-disp', uso: 'st-uso', b6: 'st-b6', sol: 'st-sol', f
 const ST_SHORT = { b6: 'Bloq. 6 meses', sol: 'Bloq. solicitação', nab: 'Não abastecida', perda: 'Golpe/fraude' };
 const tagHtml = (st, short) => `<span class="tag" style="--c:var(--${ST_COLOR[st]});--d:var(--${ST_COLOR[st]}-d)"><i></i>${short ? (ST_SHORT[st] || MP.ST[st].l) : MP.ST[st].l}</span>`;
 
-const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), custom: null, editing: false, timer: null };
+const state = { api: '', data: null, rows: [], alerts: [], S: null, parc: '', fSt: new Set(), custom: null, editing: false, timer: null, sales: null, salesAt: 0, V: null };
 try { state.api = localStorage.getItem('mp-api') || API_URL_DEFAULT; } catch (_) { state.api = API_URL_DEFAULT; }
 const DEMO = window.__MP_DEMO__ || null;
+const DEMO_SALES = window.__MP_SALES_DEMO__ || null;
 
 /* ===================== API ===================== */
 async function apiGet() {
@@ -614,6 +718,18 @@ async function apiVersion() {
   if (DEMO) return DEMO.v || 0;
   const r = await fetch(state.api + '?action=version&_=' + Date.now(), { redirect: 'follow' });
   const j = await r.json(); if (!j.ok) throw new Error(j.error || 'Erro'); return j.v;
+}
+async function apiSales(force) {
+  if (DEMO_SALES) return JSON.parse(JSON.stringify(DEMO_SALES));
+  const r = await fetch(state.api + '?action=sales' + (force ? '&force=1' : '') + '&_=' + Date.now(), { redirect: 'follow' });
+  const j = await r.json(); if (!j.ok) throw new Error(j.error || 'Erro ao ler o Registro de Vendas'); return j;
+}
+async function loadSales(force) {
+  try {
+    $('#vdErr').innerHTML = '';
+    const j = await apiSales(force); state.sales = j; state.salesAt = Date.now();
+    if (state.data) recompute();
+  } catch (e) { $('#vdErr').innerHTML = `<div class="callout bad"><b>Não consegui ler o Registro de Vendas.</b> ${esc(e.message)}</div>`; }
 }
 async function apiPost(body) {
   if (DEMO) return demoPost(body);
@@ -647,6 +763,7 @@ async function load(silent) {
     setSync('ok', `Ao vivo · planilha lida às ${t.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`);
     $('#errBox').innerHTML = '';
     schedule();
+    if (!state.sales || Date.now() - state.salesAt > 5 * 60000) loadSales();
   } catch (e) {
     setSync('off', 'Sem conexão');
     $('#errBox').innerHTML = `<div class="callout bad"><b>Não consegui ler a planilha.</b> ${esc(e.message)} <a href="#" data-go="ajustes">Abrir Ajustes</a></div>`;
@@ -676,6 +793,8 @@ function recompute() {
   const all = [...d.tabs.A.rows, ...d.tabs.B.rows].map(r => MP.classify(r, state.S));
   state.rows = all;
   state.alerts = MP.alerts(all, state.S);
+  state.V = state.sales ? MP.vendas(all, state.sales, state.S) : null;
+  if (state.V) state.V.issues.forEach(i => state.alerts.push({ t: 'vend', r: i.r, m: i.m }));
   // filtro global de parceiro
   const sel = $('#fParcGlobal'); const cur = sel.value;
   const names = Object.values(all.reduce((m, r) => { if (r.parcN && !m[r.parcKey]) m[r.parcKey] = r.parcN; return m; }, {})).sort((a, b) => a.localeCompare(b, 'pt-BR'));
@@ -710,11 +829,11 @@ function renderAll() {
   ].map(x => `<div class="kpi sm" data-st="${x.st}"><div><div class="lab">${x.l}</div><div class="note">${x.n}</div></div><div class="val">${x.v}</div></div>`).join('');
 
   renderChart(MP.previsao(D, state.S));
-  const AT = MP.AT, cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i' };
+  const AT = MP.AT, cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i', vend: 'v' };
   $('#asum').innerHTML = Object.keys(AT).map(t => `<div class="alert ${cls[t]}" data-go="alertas"><span class="mark ${t}">${AT[t].ic}</span><div><b>${AT[t].l}</b><span>${AT[t].d}</span></div><div class="n">${A.filter(a => a.t === t).length}</div></div>`).join('');
 
   renderExtras(D, k);
-  renderParceiros(); renderContas(); renderAlertas();
+  renderParceiros(); renderContas(); renderAlertas(); renderVendas(); renderConf();
 }
 function renderChart(ser) {
   const W = 640, H = 210, L = 52, R = 14, T = 22, B = 30, pw = W - L - R, ph = H - T - B;
@@ -792,6 +911,76 @@ function renderExtras(D, k) {
   $('#tCanc tbody').innerHTML = D.filter(r => r.st === 'b6' && r.canc > 0).sort((a, b) => b.canc - a.canc).map(r => `<tr data-f="conta:${r.tab}${r.row}"><td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td class="num">${fmt(r.canc)}</td><td class="cpf">${r.desbl || '—'}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhum cancelamento registrado</td></tr>';
 }
 
+/* ===================== conferência no painel ===================== */
+const mk = v => v === 'ok' ? '<span class="ok">✓</span>' : v === 'div' ? '<span class="bad">✗</span>' : '<span class="na">—</span>';
+const vdHtml = g => ({ ok: '<span class="vd ok">✓ bate</span>', div: '<span class="vd div">✗ divergente</span>', sem: '<span class="vd sem">sem registro</span>', na: '<span class="vd na">não usada</span>' })[g];
+function renderConf() {
+  const V = state.V;
+  if (!V) { $('#confSub').textContent = state.sales ? 'calculando…' : 'lendo o Registro de Vendas…'; $('#confK').innerHTML = ''; $('#tConf tbody').innerHTML = '<tr><td colspan="7" class="empty">Aguardando o Registro de Vendas</td></tr>'; return; }
+  const D = state.rows.filter(mine);
+  const ok = D.filter(r => r.conf.geral === 'ok'), div = D.filter(r => r.conf.geral === 'div'), sem = D.filter(r => r.conf.geral === 'sem'), conf = D.filter(r => r.v);
+  $('#confSub').textContent = `${conf.length} contas do Controle encontradas no Registro · Registro lido ${state.sales.readAt ? 'às ' + new Date(state.sales.readAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}`;
+  $('#confK').innerHTML = [
+    { l: 'Nas duas planilhas', v: conf.length, f: 'vend:com' }, { l: 'Batem (saída, saldo e CPF)', v: ok.length, f: 'conf:ok', c: 'ok' },
+    { l: 'Divergentes', v: div.length, f: 'conf:div', c: 'bad' }, { l: 'Usadas sem registro', v: sem.length, f: 'conf:sem', c: 'warn' },
+  ].map(k => `<div data-f="${k.f}"><div class="lab">${k.l}</div><div class="val ${k.c || ''}">${k.v}</div></div>`).join('');
+  const f = $('#confF').value, q = MP.norm($('#confQ').value);
+  const ord = { div: 0, sem: 1, ok: 2, na: 3 };
+  let rows = D.filter(r => r.conf.geral !== 'na' && (!f || r.conf.geral === f) && (!q || MP.norm(r.nome + ' ' + r.parcN).includes(q))).sort((a, b) => ord[a.conf.geral] - ord[b.conf.geral] || (b.cons || 0) - (a.cons || 0));
+  $('#tConf tbody').innerHTML = rows.slice(0, 400).map(r => { const v = r.v, c = r.conf; return `<tr data-f="conta:${r.tab}${r.row}">
+    <td><b>${esc(r.nome)}</b></td><td>${esc(r.parcN)}</td><td>${tagHtml(r.st, true)}</td>
+    <td class="num cx">${fmt(r.cons)}<small>×</small>${v ? fmt(v.mi) : '—'} ${mk(c.saida)}</td>
+    <td class="num cx">${fmt(r.sfN)}<small>×</small>${c.esperado == null ? '—' : fmt(Math.max(0, c.esperado))} ${mk(c.saldo)}</td>
+    <td class="num cx">${esc(r.cpfu) || '—'}<small>×</small>${v && v.un ? v.u : '—'} ${mk(c.cpf)}</td><td>${vdHtml(c.geral)}</td></tr>`; }).join('') || '<tr><td colspan="7" class="empty">Nenhuma conta</td></tr>';
+}
+$('#confF').addEventListener('change', renderConf); $('#confQ').addEventListener('input', renderConf);
+
+/* ===================== registro de vendas ===================== */
+const MESES_ORD = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+const mesesStr = m => MESES_ORD.filter(k => m && m[k]).map(k => `${k.toLowerCase()} ${m[k][0]}`).join(', ');
+function renderVendas() {
+  const V = state.V; const nVd = $('#nVd');
+  if (!V) { nVd.textContent = ''; $('#vdKpis').innerHTML = `<div class="kpi sm" style="grid-column:1/-1"><div><div class="lab">Registro de vendas</div><div class="note">${state.sales ? 'calculando…' : 'lendo as abas mensais do Registro de Vendas… (pode levar alguns segundos)'}</div></div></div>`; return; }
+  const my = i => mine(i.r);
+  const semVenda = V.semVenda.filter(my), falta = V.falta.filter(my), cpf = V.cpf.filter(my), intacta = V.intacta.filter(my), sobra = V.sobra.filter(my), forn = V.forn.filter(my);
+  nVd.textContent = (semVenda.length + falta.length + cpf.length + intacta.length) || '';
+  const D = state.rows.filter(mine);
+  $('#vdKpis').innerHTML = [
+    { l: 'Contas do Controle com venda no Registro', v: `${D.filter(r => r.v).length} de ${D.length}`, c: 'st-disp', n: `${fmt(D.reduce((a, r) => a + (r.v ? r.v.mi : 0), 0))} milhas vendidas · consumido no Controle ${fmt(D.reduce((a, r) => a + (r.cons || 0), 0))}`, f: 'vend:com' },
+    { l: 'Usadas sem nenhuma venda registrada', v: semVenda.length, c: 'st-perda', n: `${fmt(semVenda.reduce((a, i) => a + (i.r.cons || 0), 0))} pontos consumidos sem registro`, f: 'vend:semVenda' },
+    { l: 'Milhas faltando no Registro', v: fmt(falta.reduce((a, i) => a + i.d, 0)), c: 'st-sol', n: `${falta.length} contas com consumo maior que o vendido`, f: 'vend:falta' },
+  ].map(k => `<div class="kpi" style="--c:var(--${k.c})" data-f="${k.f}"><div class="lab">${k.l}</div><div class="val">${k.v}</div><div class="note">${k.n}</div></div>`).join('');
+  $('#vdKpis2').innerHTML = [
+    { l: 'CPFs utilizados divergentes', v: cpf.length, f: 'vend:cpf' }, { l: 'Intactas no Controle com vendas', v: intacta.length, f: 'vend:intactaComVenda' },
+    { l: 'CPFs vendidos fora do Controle', v: V.othersTotal, n: `${fmt(V.othersMilhas)} milhas nos ${V.others.length} maiores` },
+  ].map(k => `<div class="kpi sm" ${k.f ? `data-f="${k.f}"` : ''}><div><div class="lab">${k.l}</div><div class="note">${k.n || ''}</div></div><div class="val">${k.v}</div></div>`).join('');
+  const rowf = r => `data-f="conta:${r.tab}${r.row}"`;
+  $('#tSemVenda tbody').innerHTML = semVenda.sort((a, b) => (b.r.cons || 0) - (a.r.cons || 0)).map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td>${tagHtml(i.r.st, true)}</td><td class="num">${fmt(i.r.cons)}</td><td class="cpf">${esc(i.r.uso || i.r.agend || '—')}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">Todas as contas usadas têm venda registrada</td></tr>';
+  $('#tFalta tbody').innerHTML = falta.sort((a, b) => b.d - a.d).map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td class="num">${fmt(i.r.cons)}</td><td class="num">${fmt(i.r.v.mi)}</td><td class="num"><b>${fmt(i.d)}</b></td></tr>`).join('') || '<tr><td colspan="5" class="empty">Nenhuma diferença acima da tolerância</td></tr>';
+  $('#tCpf tbody').innerHTML = cpf.sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td class="num">${i.r.cpfuN}</td><td class="num">${i.r.v.u} <span class="cpf">(${i.r.v.un}/${i.r.v.n})</span></td><td class="num">${i.r.v.n}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">Sem divergências</td></tr>';
+  $('#tIntacta tbody').innerHTML = intacta.map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td class="num">${i.r.v.n}</td><td class="num">${fmt(i.r.v.mi)}</td><td class="cpf">${mesesStr(i.r.v.m)}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">Nenhuma</td></tr>';
+  $('#tSobra tbody').innerHTML = sobra.sort((a, b) => b.d - a.d).map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td class="num">${fmt(i.r.cons)}</td><td class="num">${fmt(i.r.v.mi)}</td><td class="num">+${fmt(i.d)}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">Nenhuma</td></tr>';
+  $('#tForn tbody').innerHTML = forn.map(i => `<tr ${rowf(i.r)}><td><b>${esc(i.r.nome)}</b></td><td>${esc(i.r.parcN)}</td><td class="num">${i.r.v.n - i.r.v.mp}</td><td class="cpf">${esc(i.m)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nenhuma</td></tr>';
+  renderOthers();
+}
+function renderOthers() {
+  const V = state.V; if (!V) return;
+  const sel = $('#fOthersMes'); if (!sel.options.length || sel.options.length === 1) { sel.innerHTML = '<option value="">Todos os meses</option>' + MESES_ORD.filter(k => V.others.some(o => o.m[k])).map(k => `<option value="${k}">${k}</option>`).join(''); }
+  const q = ($('#qOthers').value || '').toLowerCase(), mes = sel.value;
+  const list = V.others.filter(o => (!mes || o.m[mes]) && (!q || (o.cpf + ' ' + o.resp.join(' ')).toLowerCase().includes(q)));
+  $('#othersSub').textContent = `${V.othersTotal} CPFs · mostrando ${list.length} (vendas LATAM, a partir de 100k milhas)`;
+  $('#tOthers tbody').innerHTML = list.slice(0, 200).map(o => `<tr><td class="num" style="text-align:left">${o.cpf}</td><td class="num">${o.n}</td><td class="num"><b>${fmt(o.mi)}</b></td><td class="num">${o.u || '—'}</td><td class="cpf">${mesesStr(o.m)}</td><td class="cpf">${esc(o.resp.join(', '))}</td><td class="num"><button class="btn sm" data-newcpf="${o.cpf}">Cadastrar no Controle</button></td></tr>`).join('') || '<tr><td colspan="7" class="empty">Nenhum</td></tr>';
+}
+$('#btnSales').onclick = () => { state.sales = null; renderVendas(); loadSales(true); };
+$('#qOthers').addEventListener('input', renderOthers); $('#fOthersMes').addEventListener('change', renderOthers);
+document.addEventListener('click', e => { const b = e.target.closest('[data-newcpf]'); if (!b) return; $('#btnNew').click(); setTimeout(() => { $('#nCpf').value = b.dataset.newcpf; $('#nObs').value = 'cadastrada a partir do Registro de Vendas'; }, 50); });
+function openVendas(r) {
+  const v = r.v;
+  openModal(`<h2>Vendas no Registro — ${esc(r.nome)}</h2><div class="sub">CPF ${esc(r.cpf)} · ${v ? `${v.n} emissões · ${fmt(v.mi)} milhas · CPFs ${v.un ? v.u : '—'} · responsáveis: ${esc(v.resp.join(', '))}` : 'nenhuma venda encontrada com este CPF na coluna CONTA'}</div>
+  ${v && v.loc && v.loc.length ? `<div class="tbl" style="max-height:50dvh"><table class="grid"><thead><tr><th>Mês</th><th>Data</th><th>Localizador</th><th class="num">Milhas</th><th class="num">CPFs</th><th>Responsável</th><th>Status</th></tr></thead><tbody>${v.loc.map(l => `<tr><td class="cpf">${l[6]}</td><td class="cpf">${esc(l[0])}</td><td><b>${esc(l[1])}</b></td><td class="num">${fmt(l[2])}</td><td class="num">${l[3] == null ? '—' : l[3]}</td><td>${esc(l[4])}</td><td class="cpf">${esc(l[5])}</td></tr>`).join('')}</tbody></table></div>${v.n > v.loc.length ? `<div class="cpf" style="margin-top:6px">Mostrando ${v.loc.length} de ${v.n} emissões.</div>` : ''}` : (v ? '<div class="cpf">Lista de localizadores disponível só para contas do Controle (atualize o Registro para carregar).</div>' : '')}
+  <div class="acts"><button class="btn" data-close>Fechar</button></div>`);
+}
+
 /* ===================== parceiros ===================== */
 function renderParceiros() {
   const pp = {};
@@ -820,16 +1009,17 @@ function renderContas() {
   const rows = filteredRows();
   const flags = r => [...new Set(state.alerts.filter(a => a.r === r).map(a => a.t))].map(t => `<span class="mark ${t}" title="${esc(state.alerts.filter(a => a.r === r && a.t === t).map(a => a.m).join('\n'))}">${MP.AT[t].ic}</span>`).join('');
   $('#tContas tbody').innerHTML = rows.map(r => `<tr data-id="${r.tab}${r.row}">
-    <td>${flags(r)}</td><td>${tagHtml(r.st, true)}</td>
+    <td>${flags(r)}</td><td>${tagHtml(r.st, true)}${r.conf && r.conf.geral !== 'na' ? `<small>${{ ok: '✓ bate c/ Registro', div: '✗ diverge do Registro', sem: 'sem registro' }[r.conf.geral]}</small>` : ''}</td>
     <td><b>${cell(r, 'nome')}</b><small>${cell(r, 'cpf', 'cpf')}</small></td>
     <td>${cell(r, 'senha', 'pw')}</td>
     <td>${cell(r, 'parc')}<small>${r.tab === 'A' ? cell(r, 'tel', 'cpf') : cell(r, 'contato', 'cpf')}</small></td>
-    <td class="num">${cell(r, 'si')}</td><td class="num">${cell(r, 'sf')}</td><td class="num">${cell(r, 'cpfu')}</td>
+    <td class="num">${cell(r, 'si')}</td><td class="num">${cell(r, 'sf')}<small title="Registro de vendas: milhas vendidas · emissões">${r.v ? `reg. ${fmt(r.v.mi)} · ${r.v.n} em.` : (state.sales ? 'sem venda' : '')}</small></td><td class="num">${cell(r, 'cpfu')}<small>${r.v && r.v.un ? `reg. ${r.v.u}` : ''}</small></td>
     <td>${r.tab === 'A' ? cell(r, 'agend') : cell(r, 'uso')}<small>${r.tab === 'A' ? '' : cell(r, 'desbl')}</small></td>
     <td>${r.tab === 'A' ? '<span class="cpf">—</span>' : cell(r, 'all')}</td>
     <td title="${esc(r.obs)}&#10;${esc(r.sec)}">${cell(r, 'obs', 'cpf')}<small>${r.tab === 'A' ? 'Ativa' : 'Bloq'} · ${esc(r.sec)}</small></td>
-    <td><div class="rowmenu"><button class="btn sm" data-menu="${r.tab}${r.row}">⋯</button><div class="mn">
+    <td class="mcol"><div class="rowmenu"><button class="btn sm" data-menu="${r.tab}${r.row}">⋯</button><div class="mn">
       <a href="${sheetLink(r)}" target="_blank" rel="noopener">Abrir na planilha</a>
+      <button data-act="vendas" data-id="${r.tab}${r.row}">Ver vendas no Registro</button>
       <button data-act="move" data-id="${r.tab}${r.row}">${r.tab === 'A' ? 'Mover para bloqueadas' : 'Mover para aba ativa'}</button>
       <button data-act="del" data-id="${r.tab}${r.row}" class="danger">Excluir linha</button></div></div></td></tr>`).join('') || `<tr><td colspan="12" class="empty">Nenhuma conta com esses filtros</td></tr>`;
   $('#tfL').textContent = `${rows.length} de ${state.rows.filter(mine).length} contas`;
@@ -865,11 +1055,12 @@ document.addEventListener('click', e => {
   const r = findRow(act.dataset.id); if (!r) return;
   if (act.dataset.act === 'del') confirmDelete(r);
   if (act.dataset.act === 'move') openMove(r);
+  if (act.dataset.act === 'vendas') openVendas(r);
 });
 
 /* ===================== alertas ===================== */
 function renderAlertas() {
-  const A = state.alerts.filter(a => mine(a.r)), cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i' };
+  const A = state.alerts.filter(a => mine(a.r)), cls = { dup: 'p', div: 'w', miss: 'm', ate: 'i', vend: 'v' };
   $('#agroups').innerHTML = Object.keys(MP.AT).map(t => { const a = A.filter(x => x.t === t); return `<div class="agroup"><h2><span class="mark ${t}">${MP.AT[t].ic}</span>${MP.AT[t].l} <span class="cpf" style="font-weight:600">· ${a.length}</span></h2><p class="how">${MP.AT[t].d}</p>
     <div class="tbl" style="max-height:none"><table class="grid"><thead><tr><th>Linha</th><th>Titular</th><th>Parceiro</th><th>Status</th><th>O que está errado</th><th></th></tr></thead><tbody>${a.map(x => `<tr><td class="cpf">${x.r.tab === 'A' ? 'ativa' : 'bloq'} ${x.r.row}</td><td><b>${esc(x.r.nome)}</b></td><td>${esc(x.r.parcN) || '—'}</td><td>${tagHtml(x.r.st)}</td><td>${esc(x.m)}</td><td class="num" style="white-space:nowrap"><button class="btn sm" data-find="${esc(x.r.cpfDigits || x.r.nome)}">Ver conta</button> <a class="btn sm" href="${sheetLink(x.r)}" target="_blank" rel="noopener">Planilha</a></td></tr>`).join('') || '<tr><td colspan="6" class="empty">Nada por aqui</td></tr>'}</tbody></table></div></div>`; }).join('');
 }
@@ -931,7 +1122,7 @@ async function doPost(body, okMsg) {
 
 /* ===================== ajustes ===================== */
 function fillSettings() {
-  const S = state.S; $('#sApi').value = state.api; $('#sMinRes').value = S.minResiduo; $('#sMinDisp').value = S.minDisponivel; $('#sMeses').value = S.mesesBloqueio; $('#sDias').value = S.diasParado; $('#sRef').value = S.pollSec;
+  const S = state.S; $('#sApi').value = state.api; $('#sMinRes').value = S.minResiduo; $('#sMinDisp').value = S.minDisponivel; $('#sMeses').value = S.mesesBloqueio; $('#sDias').value = S.diasParado; $('#sRef').value = S.pollSec; $('#sTolM').value = S.tolMilhas ?? 15000; $('#sTolP').value = S.tolPct ?? 10; $('#sTolC').value = S.tolCpf ?? 2; $('#sTolS').value = S.tolSobra ?? 100000;
   $('#sAlias').value = Object.entries(S.aliases || {}).map(([k, v]) => `${k} = ${v}`).join('\n');
   const d = state.data; $('#sSheet').innerHTML = d ? `<a href="${SHEET_URL}" target="_blank" rel="noopener">CONTROLE DE PONTOS 2026</a> · abas "${esc(d.tabs.A.name)}" e "${esc(d.tabs.B.name)}"` : '—';
   $('#origemInfo').innerHTML = d ? `Última leitura: ${new Date(d.readAt).toLocaleString('pt-BR')} · ${d.tabs.A.rows.length} contas na aba ativa (${d.tabs.A.sections.length} seções) · ${d.tabs.B.rows.length} na aba de bloqueadas (${d.tabs.B.sections.length} seções)` : '';
@@ -941,7 +1132,7 @@ $('#btnSaveSettings').onclick = async () => {
   try { localStorage.setItem('mp-api', api); } catch (_) {}
   const changedApi = api !== state.api; state.api = api;
   const aliases = {}; $('#sAlias').value.split('\n').forEach(l => { const m = /^(.+?)\s*=\s*(.+)$/.exec(l.trim()); if (m) aliases[m[1].trim()] = m[2].trim(); });
-  const settings = { minResiduo: +$('#sMinRes').value || 3000, minDisponivel: +$('#sMinDisp').value || 100000, mesesBloqueio: +$('#sMeses').value || 6, diasParado: +$('#sDias').value || 15, pollSec: +$('#sRef').value || 5, aliases };
+  const settings = { minResiduo: +$('#sMinRes').value || 3000, minDisponivel: +$('#sMinDisp').value || 100000, mesesBloqueio: +$('#sMeses').value || 6, diasParado: +$('#sDias').value || 15, pollSec: +$('#sRef').value || 5, tolMilhas: +$('#sTolM').value || 15000, tolPct: +$('#sTolP').value || 10, tolCpf: +$('#sTolC').value || 0, tolSobra: +$('#sTolS').value || 100000, aliases };
   if (!state.data || changedApi) { await load(); if (!state.data) return; }
   try { await apiPost({ action: 'settings', settings }); state.S = Object.assign({}, state.S, settings); toast('Ajustes salvos'); recompute(); go('painel'); }
   catch (e) { toast(e.message, true); }
@@ -972,6 +1163,8 @@ function applyF(f) {
   else if (k === 'uso') { const [y, m] = v.split('-').map(Number); state.custom = { label: `Usadas em ${MESL[m]}/${y}`, fn: r => r.tab === 'B' && !!r.usoD && r.usoD.getFullYear() === y && r.usoD.getMonth() === m }; }
   else if (k === 'parc') { const n = state.rows.find(r => r.parcKey === v)?.parcN || v; state.custom = { label: `Disponível de ${n}`, fn: r => r.parcKey === v && (r.st === 'disp' || r.st === 'uso') }; }
   else if (k === 'parcall') { const n = state.rows.find(r => (r.parcKey || '') === v)?.parcN || '(sem parceiro)'; state.custom = { label: `Contas de ${n}`, fn: r => (r.parcKey || '') === v }; }
+  else if (k === 'conf') { const L = { ok: 'Conferência: batem com o Registro', div: 'Conferência: divergentes', sem: 'Conferência: usadas sem registro' }; state.custom = { label: L[v], fn: r => r.conf && r.conf.geral === v }; }
+  else if (k === 'vend') { const L = { com: 'Com venda no Registro', semVenda: 'Usadas sem venda no Registro', falta: 'Milhas faltando no Registro', cpf: 'CPFs utilizados divergentes', intactaComVenda: 'Intactas com vendas', sobra: 'Registro acima do consumido' }; state.custom = { label: L[v] || v, fn: r => v === 'com' ? !!r.v : (r.vx || []).some(x => x.t === v) }; }
   else if (k === 'all') { const L = { ok: 'Enviadas para ALL ✅', bloq: 'Bloqueadas no envio para ALL', insuf: 'Saldo insuficiente para ALL', canc: 'Pedido cancelado na ALL', cod: 'Pediu código / titular off', erro: 'Erro / indisponível no envio', sem: 'Sem registro de envio para ALL' }; state.custom = { label: L[v] || v, fn: r => MP.allCategoria(r) === v }; }
   go('contas'); renderContas();
   if (k === 'conta') { const tr = $(`#tContas tr[data-id="${v}"]`); if (tr) { tr.scrollIntoView({ block: 'center' }); tr.style.outline = '2px solid var(--accent)'; setTimeout(() => tr.style.outline = '', 2500); } }
@@ -979,7 +1172,7 @@ function applyF(f) {
 document.addEventListener('click', e => { const el = e.target.closest('[data-f]'); if (!el || e.target.closest('[contenteditable]')) return; e.preventDefault(); applyF(el.dataset.f); });
 
 /* navegação */
-const TITLES = { painel: 'Painel', contas: 'Contas', alertas: 'Alertas', parceiros: 'Parceiros', origem: 'Origem e migração', ajustes: 'Ajustes' };
+const TITLES = { painel: 'Painel', contas: 'Contas', alertas: 'Alertas', vendas: 'Registro de vendas', parceiros: 'Parceiros', origem: 'Origem e migração', ajustes: 'Ajustes' };
 function go(v) { $$('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v)); $$('.nav button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('#tTitle').textContent = TITLES[v]; $('#btnNew').style.display = v === 'contas' || v === 'painel' ? '' : 'none'; try { location.hash = v; } catch (_) {} }
 $('#nav').onclick = e => { const b = e.target.closest('button'); if (b) go(b.dataset.v); };
 document.body.addEventListener('click', e => { const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); go(a.dataset.go); } });
