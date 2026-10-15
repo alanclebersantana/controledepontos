@@ -211,6 +211,8 @@ h2.sec{font-size:13.5px;margin:18px 0 8px;color:var(--muted)}
 .prog .p{text-align:right;font-weight:700}
 .chart.sm{height:180px}
 .confcard{border:2px solid var(--accent);background:linear-gradient(var(--accent-dim),transparent 45%) var(--surface)}
+.confcard.closed #confBody{display:none}.confcard.closed .hd{margin-bottom:0}
+#confTbl{min-height:120px}
 .confk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 10px}
 .confk>div{background:var(--surface);border:1px solid var(--line);border-radius:var(--rs);padding:8px 12px;cursor:pointer}
 .confk>div:hover{background:var(--hover)}
@@ -290,10 +292,14 @@ kbd{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;p
     <div class="kpis2" id="kpis2"></div>
 
     <div class="card confcard" style="margin-bottom:12px">
-      <div class="hd"><h2>Conferência com o Registro de Vendas</h2><span id="confSub">lendo o Registro…</span></div>
+      <div class="hd" style="align-items:center"><button class="btn sm" id="confTg" title="Recolher / expandir">▾</button><h2 style="flex:1">Conferência com o Registro de Vendas</h2><span id="confSub">lendo o Registro…</span></div>
+      <div id="confBody">
+      <div class="filters" style="margin:4px 0 8px"><span class="cpf">Período:</span><select id="confFrom"><option value="">desde o início</option></select><span class="cpf">até</span><select id="confTo"><option value="">o mês mais recente</option></select>
+        <span style="flex:1"></span><span class="cpf">Tamanho:</span><select id="confSize"><option value="200">compacto</option><option value="380">médio</option><option value="700">grande</option><option value="99999">tudo</option></select></div>
       <div class="confk" id="confK"></div>
       <div class="filters" style="margin-bottom:8px"><select id="confF"><option value="">Mostrar: divergentes e sem registro primeiro</option><option value="div">Só divergentes</option><option value="sem">Só sem registro</option><option value="ok">Só as que batem</option></select><input type="search" id="confQ" placeholder="Buscar titular ou parceiro"><span style="flex:1"></span><a href="#" data-go="vendas">ver página completa do Registro</a></div>
-      <div class="tbl fit" style="max-height:380px"><table class="grid fit" id="tConf"><colgroup><col style="width:19%"><col style="width:12%"><col style="width:10%"><col><col><col style="width:12%"><col style="width:11%"></colgroup><thead><tr><th>Titular</th><th>Parceiro</th><th>Status</th><th class="num">Saída: Controle × Registro</th><th class="num">Saldo: Controle × esperado</th><th class="num">CPFs: C × R</th><th>Resultado</th></tr></thead><tbody></tbody></table></div>
+      <div class="tbl fit" id="confTbl" style="max-height:380px;resize:vertical;overflow:auto"><table class="grid fit" id="tConf"><colgroup><col style="width:19%"><col style="width:12%"><col style="width:10%"><col><col><col style="width:12%"><col style="width:11%"></colgroup><thead><tr><th>Titular</th><th>Parceiro</th><th>Status</th><th class="num">Saída: Controle × Registro</th><th class="num">Saldo: Controle × esperado</th><th class="num">CPFs: C × R</th><th>Resultado</th></tr></thead><tbody></tbody></table></div>
+      </div>
     </div>
 
     <div class="card" style="margin-bottom:12px"><div class="hd"><h2>Onde estão os pontos</h2><span id="compTot"></span></div><div class="comp" id="comp"></div><div class="legend" id="compLeg"></div></div>
@@ -631,6 +637,25 @@ const MP = (() => {
     return rows.filter(r => r.st === 'uso').map(r => ({ r, pct: (r.siN && r.sfN != null) ? Math.max(0, Math.min(1, 1 - r.sfN / r.siN)) : null, cpfs: r.cpfuN })).sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
   }
 
+  const MES3 = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+  /** 'JUN/26' → 2606 (ordenável). */
+  const mesKey = t => { const m = /^([A-Z]{3})\/(\d{2})$/i.exec(String(t || '').trim()); if (!m) return 0; const i = MES3.indexOf(m[1].toUpperCase()); return i < 0 ? 0 : Number(m[2]) * 100 + i + 1; };
+  const mesLabel = t => { const m = /^([A-Z]{3})\/(\d{2})$/i.exec(String(t || '').trim()); return m ? `${m[1].toLowerCase()}/${m[2]}` : t; };
+
+  /** Recorta os dados do Registro a um intervalo de meses (chaves 'JUN/26'); from/to inclusivos, vazios = sem limite. */
+  function filtrarVendas(sales, from, to) {
+    if (!sales || (!from && !to)) return sales;
+    const f = from ? mesKey(from) : 0, t = to ? mesKey(to) : 999999;
+    const ok = k => { const x = mesKey(k); return x >= f && x <= t; };
+    const cut = o => { const r = { n: 0, mi: 0, u: 0, un: 0, mp: 0, m: {}, resp: o.resp, loc: (o.loc || []).filter(l => ok(l[6])) };
+      Object.keys(o.m || {}).forEach(k => { if (!ok(k)) return; const a = o.m[k]; r.m[k] = a; r.n += a[0] || 0; r.mi += a[1] || 0; r.u += a[2] || 0; r.mp += a[3] || 0; r.un += a[4] || 0; });
+      return r; };
+    const found = {}; Object.keys(sales.found || {}).forEach(c => { const r = cut(sales.found[c]); if (r.n) found[c] = r; });
+    const others = (sales.others || []).map(o => Object.assign({ cpf: o.cpf }, cut(o))).filter(o => o.n && o.mp > 0).sort((a, b) => b.mi - a.mi);
+    const months = {}; Object.keys(sales.months || {}).forEach(k => { if (ok(k)) months[k] = sales.months[k]; });
+    return Object.assign({}, sales, { found, others, othersTotal: others.length, months, range: { from, to } });
+  }
+
   const padCpf = d => { d = String(d || '').replace(/\D/g, ''); return (d.length >= 9 && d.length <= 11) ? d.padStart(11, '0') : d; };
 
   /**
@@ -683,7 +708,7 @@ const MP = (() => {
     };
   }
 
-  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts, usoPorMes, resultadoAll, allCategoria, emUso, vendas, padCpf };
+  return { ST, AT, num, fmt, dt, fdate, plusMonths, norm, parceiro, cancelados, classify, kpis, previsao, alerts, usoPorMes, resultadoAll, allCategoria, emUso, vendas, padCpf, mesKey, mesLabel, filtrarVendas };
 })();
 if (typeof module !== 'undefined') module.exports = MP;
 
@@ -740,9 +765,9 @@ async function loadSales(force) {
       for (let i = 0; i < tabs.length; i++) {
         prog(`lendo ${tabs[i].name} (${i + 1} de ${tabs.length})…`);
         const j = await apiJson(state.api + '?action=sales&tab=' + encodeURIComponent(tabs[i].name) + (force ? '&force=1' : '') + '&_=' + Date.now());
-        months[j.mk] = j.stats;
+        months[j.tab.toUpperCase()] = j.stats;
         Object.keys(j.agg).forEach(cpf => { const o = j.agg[cpf], t = agg[cpf] = agg[cpf] || { n: 0, mi: 0, u: 0, un: 0, mp: 0, m: {}, resp: {}, loc: [] };
-          t.n += o.n; t.mi += o.mi; t.u += o.u; t.un += o.un; t.mp += o.mp; t.m[j.mk] = [o.n, o.mi, o.u];
+          t.n += o.n; t.mi += o.mi; t.u += o.u; t.un += o.un; t.mp += o.mp; t.m[j.tab.toUpperCase()] = [o.n, o.mi, o.u, o.mp, o.un];
           Object.keys(o.resp).forEach(r => t.resp[r] = (t.resp[r] || 0) + o.resp[r]); t.loc.push(...(o.loc || [])); });
       }
       const ctrl = new Set(state.rows.map(r => MP.padCpf(r.cpfDigits)).filter(c => c.length === 11));
@@ -820,7 +845,7 @@ function recompute() {
   const all = [...d.tabs.A.rows, ...d.tabs.B.rows].map(r => MP.classify(r, state.S));
   state.rows = all;
   state.alerts = MP.alerts(all, state.S);
-  state.V = state.sales ? MP.vendas(all, state.sales, state.S) : null;
+  state.V = state.sales ? MP.vendas(all, MP.filtrarVendas(state.sales, CONF.from, CONF.to), state.S) : null;
   if (state.V) state.V.issues.forEach(i => state.alerts.push({ t: 'vend', r: i.r, m: i.m }));
   // filtro global de parceiro
   const sel = $('#fParcGlobal'); const cur = sel.value;
@@ -939,6 +964,24 @@ function renderExtras(D, k) {
 }
 
 /* ===================== conferência no painel ===================== */
+const CONF = Object.assign({ open: true, size: '380', from: '', to: '', height: 0 }, (() => { try { return JSON.parse(localStorage.getItem('mp-conf') || '{}'); } catch (_) { return {}; } })());
+const saveConf = () => { try { localStorage.setItem('mp-conf', JSON.stringify(CONF)); } catch (_) {} };
+function applyConfPrefs() {
+  const card = $('.confcard'); card.classList.toggle('closed', !CONF.open); $('#confTg').textContent = CONF.open ? '▾' : '▸';
+  $('#confSize').value = CONF.size; $('#confTbl').style.maxHeight = CONF.size + 'px'; if (CONF.height) $('#confTbl').style.height = CONF.height + 'px';
+}
+$('#confTg').onclick = () => { CONF.open = !CONF.open; saveConf(); applyConfPrefs(); };
+$('#confSize').onchange = () => { CONF.size = $('#confSize').value; CONF.height = 0; $('#confTbl').style.height = ''; saveConf(); applyConfPrefs(); };
+new ResizeObserver(() => { const h = $('#confTbl').offsetHeight; if (CONF.open && Math.abs(h - (CONF.height || 0)) > 4 && h > 100) { CONF.height = h; saveConf(); } }).observe($('#confTbl'));
+function fillConfRange() {
+  const months = Object.keys((state.sales && state.sales.months) || {}).sort((a, b) => MP.mesKey(a) - MP.mesKey(b));
+  const opt = (sel, first) => { sel.innerHTML = `<option value="">${first}</option>` + months.map(k => `<option value="${k}">${MP.mesLabel(k)}</option>`).join(''); };
+  opt($('#confFrom'), 'desde o início'); opt($('#confTo'), 'o mês mais recente');
+  $('#confFrom').value = months.includes(CONF.from) ? CONF.from : ''; $('#confTo').value = months.includes(CONF.to) ? CONF.to : '';
+}
+$('#confFrom').onchange = () => { CONF.from = $('#confFrom').value; saveConf(); recompute(); };
+$('#confTo').onchange = () => { CONF.to = $('#confTo').value; saveConf(); recompute(); };
+applyConfPrefs();
 const mk = v => v === 'ok' ? '<span class="ok">✓</span>' : v === 'div' ? '<span class="bad">✗</span>' : '<span class="na">—</span>';
 const vdHtml = g => ({ ok: '<span class="vd ok">✓ bate</span>', div: '<span class="vd div">✗ divergente</span>', sem: '<span class="vd sem">sem registro</span>', na: '<span class="vd na">não usada</span>' })[g];
 function renderConf() {
@@ -946,7 +989,9 @@ function renderConf() {
   if (!V) { $('#confSub').textContent = state.salesProg || (state.sales ? 'calculando…' : 'lendo o Registro de Vendas…'); $('#confK').innerHTML = ''; $('#tConf tbody').innerHTML = '<tr><td colspan="7" class="empty">Aguardando o Registro de Vendas</td></tr>'; return; }
   const D = state.rows.filter(mine);
   const ok = D.filter(r => r.conf.geral === 'ok'), div = D.filter(r => r.conf.geral === 'div'), sem = D.filter(r => r.conf.geral === 'sem'), conf = D.filter(r => r.v);
-  $('#confSub').textContent = `${conf.length} contas do Controle encontradas no Registro · Registro lido ${state.sales.readAt ? 'às ' + new Date(state.sales.readAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}`;
+  fillConfRange();
+  const per = (CONF.from || CONF.to) ? ` · período ${CONF.from ? MP.mesLabel(CONF.from) : 'início'} a ${CONF.to ? MP.mesLabel(CONF.to) : 'atual'}` : '';
+  $('#confSub').textContent = `${conf.length} contas do Controle encontradas no Registro${per} · Registro lido ${state.sales.readAt ? 'às ' + new Date(state.sales.readAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}`;
   $('#confK').innerHTML = [
     { l: 'Nas duas planilhas', v: conf.length, f: 'vend:com' }, { l: 'Batem (saída, saldo e CPF)', v: ok.length, f: 'conf:ok', c: 'ok' },
     { l: 'Divergentes', v: div.length, f: 'conf:div', c: 'bad' }, { l: 'Usadas sem registro', v: sem.length, f: 'conf:sem', c: 'warn' },
@@ -963,8 +1008,7 @@ function renderConf() {
 $('#confF').addEventListener('change', renderConf); $('#confQ').addEventListener('input', renderConf);
 
 /* ===================== registro de vendas ===================== */
-const MESES_ORD = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
-const mesesStr = m => MESES_ORD.filter(k => m && m[k]).map(k => `${k.toLowerCase()} ${m[k][0]}`).join(', ');
+const mesesStr = m => Object.keys(m || {}).sort((a, b) => MP.mesKey(a) - MP.mesKey(b)).map(k => `${MP.mesLabel(k)} ${m[k][0]}`).join(', ');
 function renderVendas() {
   const V = state.V; const nVd = $('#nVd');
   if (!V) { nVd.textContent = ''; $('#vdKpis').innerHTML = `<div class="kpi sm" style="grid-column:1/-1"><div><div class="lab">Registro de vendas</div><div class="note">${state.salesProg || (state.sales ? 'calculando…' : 'lendo as abas mensais do Registro de Vendas…')}</div></div></div>`; return; }
@@ -992,7 +1036,7 @@ function renderVendas() {
 }
 function renderOthers() {
   const V = state.V; if (!V) return;
-  const sel = $('#fOthersMes'); if (!sel.options.length || sel.options.length === 1) { sel.innerHTML = '<option value="">Todos os meses</option>' + MESES_ORD.filter(k => V.others.some(o => o.m[k])).map(k => `<option value="${k}">${k}</option>`).join(''); }
+  const sel = $('#fOthersMes'); if (!sel.options.length || sel.options.length === 1) { sel.innerHTML = '<option value="">Todos os meses</option>' + [...new Set(V.others.flatMap(o => Object.keys(o.m)))].sort((a, b) => MP.mesKey(a) - MP.mesKey(b)).map(k => `<option value="${k}">${MP.mesLabel(k)}</option>`).join(''); }
   const q = ($('#qOthers').value || '').toLowerCase(), mes = sel.value;
   const list = V.others.filter(o => (!mes || o.m[mes]) && (!q || (o.cpf + ' ' + o.resp.join(' ')).toLowerCase().includes(q)));
   $('#othersSub').textContent = `${V.othersTotal} CPFs · mostrando ${list.length} (vendas LATAM, a partir de 100k milhas)`;
