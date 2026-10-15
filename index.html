@@ -719,17 +719,44 @@ async function apiVersion() {
   const r = await fetch(state.api + '?action=version&_=' + Date.now(), { redirect: 'follow' });
   const j = await r.json(); if (!j.ok) throw new Error(j.error || 'Erro'); return j.v;
 }
-async function apiSales(force) {
-  if (DEMO_SALES) return JSON.parse(JSON.stringify(DEMO_SALES));
-  const r = await fetch(state.api + '?action=sales' + (force ? '&force=1' : '') + '&_=' + Date.now(), { redirect: 'follow' });
-  const j = await r.json(); if (!j.ok) throw new Error(j.error || 'Erro ao ler o Registro de Vendas'); return j;
+async function apiJson(url) {
+  const r = await fetch(url, { redirect: 'follow' });
+  const t = await r.text();
+  let j; try { j = JSON.parse(t); } catch (_) { throw new Error('o Apps Script devolveu uma página de erro em vez de dados (provável limite de tempo). Tente "Reler o Registro".'); }
+  if (!j.ok) throw new Error(j.error || 'Erro'); return j;
 }
+let salesBusy = false;
 async function loadSales(force) {
+  if (salesBusy) return; salesBusy = true;
+  const prog = t => { state.salesProg = t; if ($('#confSub')) $('#confSub').textContent = t; renderVendas(); };
   try {
     $('#vdErr').innerHTML = '';
-    const j = await apiSales(force); state.sales = j; state.salesAt = Date.now();
+    let merged;
+    if (DEMO_SALES) merged = JSON.parse(JSON.stringify(DEMO_SALES));
+    else {
+      prog('listando as abas do Registro de Vendas…');
+      const tabs = (await apiJson(state.api + '?action=salesTabs&_=' + Date.now())).tabs;
+      const agg = {}, months = {};
+      for (let i = 0; i < tabs.length; i++) {
+        prog(`lendo ${tabs[i].name} (${i + 1} de ${tabs.length})…`);
+        const j = await apiJson(state.api + '?action=sales&tab=' + encodeURIComponent(tabs[i].name) + (force ? '&force=1' : '') + '&_=' + Date.now());
+        months[j.mk] = j.stats;
+        Object.keys(j.agg).forEach(cpf => { const o = j.agg[cpf], t = agg[cpf] = agg[cpf] || { n: 0, mi: 0, u: 0, un: 0, mp: 0, m: {}, resp: {}, loc: [] };
+          t.n += o.n; t.mi += o.mi; t.u += o.u; t.un += o.un; t.mp += o.mp; t.m[j.mk] = [o.n, o.mi, o.u];
+          Object.keys(o.resp).forEach(r => t.resp[r] = (t.resp[r] || 0) + o.resp[r]); t.loc.push(...(o.loc || [])); });
+      }
+      const ctrl = new Set(state.rows.map(r => MP.padCpf(r.cpfDigits)).filter(c => c.length === 11));
+      const found = {}, others = [];
+      Object.keys(agg).forEach(cpf => { const o = agg[cpf]; const resp = Object.keys(o.resp).sort((a, b) => o.resp[b] - o.resp[a]).slice(0, 3);
+        if (ctrl.has(cpf)) found[cpf] = { n: o.n, mi: o.mi, u: o.u, un: o.un, mp: o.mp, m: o.m, resp, loc: o.loc };
+        else if (o.mp > 0 && o.mi >= 100000) others.push({ cpf, n: o.n, mi: o.mi, u: o.u, mp: o.mp, m: o.m, resp }); });
+      others.sort((a, b) => b.mi - a.mi);
+      merged = { ok: true, readAt: new Date().toISOString(), months, found, others: others.slice(0, 400), othersTotal: others.length };
+    }
+    state.sales = merged; state.salesAt = Date.now(); state.salesProg = '';
     if (state.data) recompute();
-  } catch (e) { $('#vdErr').innerHTML = `<div class="callout bad"><b>Não consegui ler o Registro de Vendas.</b> ${esc(e.message)}</div>`; }
+  } catch (e) { state.salesProg = ''; $('#vdErr').innerHTML = `<div class="callout bad"><b>Não consegui ler o Registro de Vendas:</b> ${esc(e.message)}</div>`; if ($('#confSub')) $('#confSub').textContent = 'erro ao ler o Registro — veja a página Registro de vendas'; }
+  salesBusy = false;
 }
 async function apiPost(body) {
   if (DEMO) return demoPost(body);
@@ -916,7 +943,7 @@ const mk = v => v === 'ok' ? '<span class="ok">✓</span>' : v === 'div' ? '<spa
 const vdHtml = g => ({ ok: '<span class="vd ok">✓ bate</span>', div: '<span class="vd div">✗ divergente</span>', sem: '<span class="vd sem">sem registro</span>', na: '<span class="vd na">não usada</span>' })[g];
 function renderConf() {
   const V = state.V;
-  if (!V) { $('#confSub').textContent = state.sales ? 'calculando…' : 'lendo o Registro de Vendas…'; $('#confK').innerHTML = ''; $('#tConf tbody').innerHTML = '<tr><td colspan="7" class="empty">Aguardando o Registro de Vendas</td></tr>'; return; }
+  if (!V) { $('#confSub').textContent = state.salesProg || (state.sales ? 'calculando…' : 'lendo o Registro de Vendas…'); $('#confK').innerHTML = ''; $('#tConf tbody').innerHTML = '<tr><td colspan="7" class="empty">Aguardando o Registro de Vendas</td></tr>'; return; }
   const D = state.rows.filter(mine);
   const ok = D.filter(r => r.conf.geral === 'ok'), div = D.filter(r => r.conf.geral === 'div'), sem = D.filter(r => r.conf.geral === 'sem'), conf = D.filter(r => r.v);
   $('#confSub').textContent = `${conf.length} contas do Controle encontradas no Registro · Registro lido ${state.sales.readAt ? 'às ' + new Date(state.sales.readAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}`;
@@ -940,7 +967,7 @@ const MESES_ORD = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET'
 const mesesStr = m => MESES_ORD.filter(k => m && m[k]).map(k => `${k.toLowerCase()} ${m[k][0]}`).join(', ');
 function renderVendas() {
   const V = state.V; const nVd = $('#nVd');
-  if (!V) { nVd.textContent = ''; $('#vdKpis').innerHTML = `<div class="kpi sm" style="grid-column:1/-1"><div><div class="lab">Registro de vendas</div><div class="note">${state.sales ? 'calculando…' : 'lendo as abas mensais do Registro de Vendas… (pode levar alguns segundos)'}</div></div></div>`; return; }
+  if (!V) { nVd.textContent = ''; $('#vdKpis').innerHTML = `<div class="kpi sm" style="grid-column:1/-1"><div><div class="lab">Registro de vendas</div><div class="note">${state.salesProg || (state.sales ? 'calculando…' : 'lendo as abas mensais do Registro de Vendas…')}</div></div></div>`; return; }
   const my = i => mine(i.r);
   const semVenda = V.semVenda.filter(my), falta = V.falta.filter(my), cpf = V.cpf.filter(my), intacta = V.intacta.filter(my), sobra = V.sobra.filter(my), forn = V.forn.filter(my);
   nVd.textContent = (semVenda.length + falta.length + cpf.length + intacta.length) || '';
@@ -971,7 +998,7 @@ function renderOthers() {
   $('#othersSub').textContent = `${V.othersTotal} CPFs · mostrando ${list.length} (vendas LATAM, a partir de 100k milhas)`;
   $('#tOthers tbody').innerHTML = list.slice(0, 200).map(o => `<tr><td class="num" style="text-align:left">${o.cpf}</td><td class="num">${o.n}</td><td class="num"><b>${fmt(o.mi)}</b></td><td class="num">${o.u || '—'}</td><td class="cpf">${mesesStr(o.m)}</td><td class="cpf">${esc(o.resp.join(', '))}</td><td class="num"><button class="btn sm" data-newcpf="${o.cpf}">Cadastrar no Controle</button></td></tr>`).join('') || '<tr><td colspan="7" class="empty">Nenhum</td></tr>';
 }
-$('#btnSales').onclick = () => { state.sales = null; renderVendas(); loadSales(true); };
+$('#btnSales').onclick = () => { state.sales = null; state.V = null; renderVendas(); renderConf(); loadSales(true); };
 $('#qOthers').addEventListener('input', renderOthers); $('#fOthersMes').addEventListener('change', renderOthers);
 document.addEventListener('click', e => { const b = e.target.closest('[data-newcpf]'); if (!b) return; $('#btnNew').click(); setTimeout(() => { $('#nCpf').value = b.dataset.newcpf; $('#nObs').value = 'cadastrada a partir do Registro de Vendas'; }, 50); });
 function openVendas(r) {
